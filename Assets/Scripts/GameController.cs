@@ -16,6 +16,28 @@ public class GameController : MonoBehaviour
 		SENIOR_STAGE,
 	}
 
+	public enum EVENTSTAGE
+	{
+		NORMAL_STATE,
+		SPECIAL_STATE,
+		SECTION_STATE,
+	}
+
+	private static GameController instance;  
+	private static GameObject container;  
+
+	public static GameController GetInstance()  
+	{  
+		if( !instance )  
+		{  
+			container = new GameObject();  
+			container.name = "GameController";  
+			instance = container.AddComponent(typeof(GameController)) as GameController;  
+		}  
+
+		return instance;  
+	}  
+
 	public delegate void GameControllerHandler(JOBSTAGE stage);
 	public static event GameControllerHandler ChangeStageEvnet;
 
@@ -24,22 +46,18 @@ public class GameController : MonoBehaviour
 	public static event GameControllerHandler2 SpecialEvent;
 	public static event GameControllerHandler2 SectionEvent;
 
-	public JOBSTAGE nowStage = JOBSTAGE.CHILD_STAGE;
 
-	public float[] sectionTime = null;
+	public JOBSTAGE nowStage = JOBSTAGE.CHILD_STAGE;
+	public EVENTSTAGE nowEvent = EVENTSTAGE.NORMAL_STATE;
+	public float gameSpeed = 1000.0f;
+
+	public float[] sectionTime = {0.0f,20.0f,10.0f,20.0f,10.0f,20.0f,15.0f};
 
 	private float timer = 0.0f;
 	private int timerIndex = 0;
 
-	void Awake()
-	{
-		if(ChangeStageEvnet!=null)
-			ChangeStageEvnet (nowStage);
-	}
-
 	void Start () 
 	{
-		nowStage = JOBSTAGE.CHILD_STAGE;
 		timer = Time.time;
 	}
 
@@ -53,21 +71,27 @@ public class GameController : MonoBehaviour
 	{
 		timer = Time.time;
 
-		if (timerIndex.Equals (0)) 
+		Debug.Log (timerIndex);
+
+		if (timerIndex.Equals (0)) // 0 -> 1 N
 		{
 			timerIndex++;
+
+			nowEvent = EVENTSTAGE.NORMAL_STATE;
 
 			if (NormalEvent != null)
 				NormalEvent();
 		}
-		else if (timerIndex.Equals (1)) 
+		else if (timerIndex.Equals (1))  // 1 -> 2 S
 		{
 			timerIndex++;
+
+			nowEvent = EVENTSTAGE.SPECIAL_STATE;
 
 			if(SpecialEvent!=null)
 				SpecialEvent();
 		}
-		else if (timerIndex.Equals (2)) 
+		else if (timerIndex.Equals (2))  // 2 -> 3 N
 		{
 			if (nowStage.Equals (JOBSTAGE.CHILD_STAGE))
 			{
@@ -79,40 +103,54 @@ public class GameController : MonoBehaviour
 
 			timerIndex++;
 
+			nowEvent = EVENTSTAGE.NORMAL_STATE;
+
 			if (NormalEvent != null)
 				NormalEvent();
 		}
-		else if (timerIndex.Equals (3)) 
+		else if (timerIndex.Equals (3))  // 3 -> 4 S
 		{
+			timerIndex++;
+
+			nowEvent = EVENTSTAGE.SPECIAL_STATE;
+
 			if(SpecialEvent!=null)
 				SpecialEvent();
+		}
+		else if (timerIndex.Equals(4)) // 4 -> 5 N
+		{
+			timerIndex++;
+
+			nowEvent = EVENTSTAGE.NORMAL_STATE;
+
+			if (NormalEvent != null)
+				NormalEvent();
+		}
+		else if (timerIndex.Equals(5)) // 4 -> 5 SS
+		{
+			timerIndex++;
 
 			if (nowStage.Equals (JOBSTAGE.STUDENT_STAGE) ||
-			   nowStage.Equals (JOBSTAGE.UNIVERSITY_STAGE) ||
-			   nowStage.Equals (JOBSTAGE.UNEMPLOYED_STAGE_0) ||
-			   nowStage.Equals (JOBSTAGE.UNEMPLOYED_STAGE_1) ||
-			   nowStage.Equals (JOBSTAGE.WORKER_STAGE_0) ||
-			   nowStage.Equals (JOBSTAGE.WORKER_STAGE_1) ||
-			   nowStage.Equals (JOBSTAGE.CHICKEN_STAGE)) {
+				nowStage.Equals (JOBSTAGE.UNIVERSITY_STAGE) ||
+				nowStage.Equals (JOBSTAGE.UNEMPLOYED_STAGE_0) ||
+				nowStage.Equals (JOBSTAGE.UNEMPLOYED_STAGE_1) ||
+				nowStage.Equals (JOBSTAGE.WORKER_STAGE_0) ||
+				nowStage.Equals (JOBSTAGE.WORKER_STAGE_1) ||
+				nowStage.Equals (JOBSTAGE.CHICKEN_STAGE))
+			{
+				nowEvent = EVENTSTAGE.SECTION_STATE;
 
-				timerIndex++;
-			} 
-
+				if (SectionEvent != null)
+					SectionEvent();
+			}
 			else
 			{
 				ChangeJob ();
 				ChangeStage();
-
 				return;
 			}
 		}
-		else if (timerIndex.Equals(4)) 
-		{
-			if (SectionEvent != null)
-				SectionEvent();
-			//
-		}
-		else
+		else if (timerIndex.Equals(6)) // end
 		{
 			//ChangeJob (0 or 1);
 			ChangeJob ();
