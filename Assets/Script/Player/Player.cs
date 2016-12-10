@@ -28,6 +28,6 @@ public class Player : MonoBehaviour {
     }
 
     public Transform Move(Vector2 dest) {
-        return move.MoveTransformTo(trans, dest);
+        return move.MoveTransToDestInArea(trans, dest);
     }
 }

@@ -479,6 +479,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 2081444790}
   - 114: {fileID: 2081444789}
+  - 114: {fileID: 2081444791}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -511,6 +512,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+--- !u!114 &2081444791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2081444788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09ddc4421cc1bbb40a17417d810ce7fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  createZoneTrans: {fileID: 1658970276}
+  childItem: []
+  normalPeriod: 0.2
+  specialPeriod: 0.5
 --- !u!1 &2145087411
 GameObject:
   m_ObjectHideFlags: 0
