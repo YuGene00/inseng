@@ -15,15 +15,16 @@ public class BackMover : MonoBehaviour
 	private int imgIndex = 0;
 	private int backIndex = 0;
 
-	public bool lastImage = false;
-
 	void Start()
 	{
 		ChangeStage(GameController.JOBSTAGE.CHILD_STAGE);
 
 		for (int i=0;i<backGroup.childCount;i++)
 		{
-			ChangeImage (i, i);
+			if (i.Equals (0))
+				ChangeImage (i, i);
+			else
+				ChangeImage(i,Random.Range (1,spriteGroup.Length-2));
 
 			length = backGroup.GetChild (i).GetComponent<Renderer> ().bounds.size.y;
 			backGroup.GetChild (i).position = new Vector3 (0.0f,i*length,0.0f);
@@ -49,17 +50,13 @@ public class BackMover : MonoBehaviour
 		string stageName = stage.ToString().Split('_')[0];
 
 		spriteGroup = LoadSprite (stageName);
-	}
 
-	//last Image Event
-	void LastImage()
-	{
-		lastImage = true;
+		imgIndex = 0;
 	}
 
 	Sprite[] LoadSprite(string name)
 	{
-		return Resources.LoadAll<Sprite>("Images/"+name);
+		return Resources.LoadAll<Sprite>("Images/Backgrounds/"+name);
 	}
 
 	void Update()
@@ -71,43 +68,46 @@ public class BackMover : MonoBehaviour
 	void MoveBack()
 	{
 		int backCount = backGroup.childCount;
-		float len = backGroup.GetChild (backIndex).GetComponent<Renderer> ().bounds.size.y;
 
 		for(int i=0;i<backCount;i++)
 			backGroup.GetChild(i).Translate(new Vector3(0.0f,-speed*Time.deltaTime, 0.0f));
 
-		if(backGroup.GetChild(backIndex).position.y < -(len*1.5f))
+		int proIndex;
+
+		if (backIndex.Equals (backGroup.childCount - 1))
+			proIndex = 0;
+		else
+			proIndex = backIndex+1;
+
+		float len = backGroup.GetChild (proIndex).GetComponent<Renderer> ().bounds.size.y;
+
+		if(backGroup.GetChild(proIndex).position.y < -len+200.0f)
 		{
 			int preIndex;
 
 			if (backIndex.Equals (0))
-				preIndex = 3;
+				preIndex = backGroup.childCount-1;
 			else
 				preIndex = backIndex-1;
-
 
 			Transform preTran = backGroup.GetChild (preIndex);
 			length = preTran.GetComponent<Renderer> ().bounds.size.y;
 
-			backGroup.GetChild (backIndex).position = new Vector3 (0.0f,preTran.position.y+length,0.0f);
-
 			if (!imgIndex.Equals (0))
 			{
 				//Stage Change Check
-				if (lastImage)
-					imgIndex = spriteGroup.Length-1;
-				else
-					imgIndex = Random.Range (1,spriteGroup.Length-2);
+				imgIndex = RndNum(1,spriteGroup.Length-1,imgIndex);
 
 				ChangeImage (backIndex,imgIndex);
 			}
 			else
 				ChangeImage (backIndex,imgIndex++);
 
-			backIndex = (backIndex+1)%backCount;
+			len = backGroup.GetChild (backIndex).GetComponent<Renderer> ().bounds.size.y;
 
-			if(lastImage)
-				StageChange(1);
+			backGroup.GetChild (backIndex).position = new Vector3 (0.0f,preTran.position.y+length/2.0f+len/2.0f,0.0f);
+
+			backIndex = (backIndex+1)%backCount;
 		}
 	}
 
@@ -116,12 +116,13 @@ public class BackMover : MonoBehaviour
 		backGroup.GetChild (bIndex).GetComponent<SpriteRenderer> ().sprite = spriteGroup [iIndex];
 	}
 
-	void StageChange(int nextStage)
+	int RndNum(int min, int max, int pre)
 	{
-		lastImage = false;
+		int rnd = Random.Range (min,max);
 
-		//spriteGroup = LoadSprite (nextStage);
+		while(rnd.Equals(pre))
+			rnd = Random.Range (min,max);
 
-		imgIndex = 0;
+		return rnd;
 	}
 }
