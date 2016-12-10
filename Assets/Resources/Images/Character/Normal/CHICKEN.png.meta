@@ -1,14 +1,14 @@
 fileFormatVersion: 2
-guid: 5b3764ec4a309874e8b5b486bcc0fe2a
-timeCreated: 1481325292
+guid: 728dee31de63c7b4ebac88d72b1534be
+timeCreated: 1481386651
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: normalkid_0
+    21300000: CHICKEN
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
+    enableMipMap: 1
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -39,7 +39,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -51,27 +51,38 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: normalkid_0
+    - name: CHICKEN
       rect:
         serializedVersion: 2
-        x: 66
-        y: 53
-        width: 113
-        height: 207
+        x: 37
+        y: 10
+        width: 164
+        height: 283
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -49.5, y: 103.5}
-        - {x: -56.5, y: 60.5}
-        - {x: -56.5, y: -21.5}
-        - {x: -40.5, y: -71.5}
-        - {x: -16.5, y: -103.5}
-        - {x: 36.5, y: -103.5}
-        - {x: 56.5, y: -48.5}
-        - {x: 56.5, y: 103.5}
+      - - {x: 61, y: 136.5}
+        - {x: 37, y: 141.5}
+        - {x: -50, y: 141.5}
+        - {x: -81, y: 86.5}
+        - {x: -82, y: 85.5}
+        - {x: -82, y: 25.5}
+        - {x: -24, y: -98.5}
+        - {x: 23, y: -141.5}
+        - {x: 57, y: -141.5}
+        - {x: 71, y: -140.5}
+        - {x: 82, y: -98.5}
+        - {x: 82, y: 43.5}
+        - {x: 65, y: 101.5}
+      - - {x: 13, y: -128.5}
+        - {x: 15, y: -130.5}
+        - {x: 18, y: -129.5}
+        - {x: 18, y: -126.5}
+        - {x: 16, y: -124.5}
+        - {x: 13, y: -125.5}
     outline: []
-  spritePackingTag: Character
+  spritePackingTag: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

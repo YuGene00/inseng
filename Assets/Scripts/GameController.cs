@@ -45,13 +45,14 @@ public class GameController : MonoBehaviour
 	public static event GameControllerHandler2 NormalEvent;
 	public static event GameControllerHandler2 SpecialEvent;
 	public static event GameControllerHandler2 SectionEvent;
+	public static event GameControllerHandler2 SpecialEndEvent;
 
 
 	public JOBSTAGE nowStage = JOBSTAGE.CHILD_STAGE;
 	public EVENTSTAGE nowEvent = EVENTSTAGE.NORMAL_STATE;
 	public float gameSpeed = 800.0f;
 
-	public float[] sectionTime = {0.0f,20.0f,10.0f,20.0f,10.0f,20.0f,15.0f};
+	public float[] sectionTime = {0.0f,10.0f,5.0f,10.0f,5.0f,10.0f,7.5f};
 
 	private float timer = 0.0f;
 	private int timerIndex = 0;
@@ -59,6 +60,11 @@ public class GameController : MonoBehaviour
 	void Start () 
 	{
 		timer = Time.time;
+	}
+
+	public float GetTime() 
+	{
+		return Time.time-timer;
 	}
 
 	void Update ()
@@ -91,6 +97,9 @@ public class GameController : MonoBehaviour
 		}
 		else if (timerIndex.Equals (2))  // 2 -> 3 N
 		{
+			if (SpecialEndEvent != null)
+				SpecialEndEvent ();
+
 			if (nowStage.Equals (JOBSTAGE.CHILD_STAGE))
 			{
 				ChangeJob ();
@@ -117,6 +126,9 @@ public class GameController : MonoBehaviour
 		}
 		else if (timerIndex.Equals(4)) // 4 -> 5 N
 		{
+			if (SpecialEndEvent != null)
+				SpecialEndEvent ();
+			
 			timerIndex++;
 
 			nowEvent = EVENTSTAGE.NORMAL_STATE;
@@ -150,6 +162,7 @@ public class GameController : MonoBehaviour
 		}
 		else if (timerIndex.Equals(6)) // end
 		{
+			//Section
 			//ChangeJob (0 or 1);
 			ChangeJob ();
 			ChangeStage();
