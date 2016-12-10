@@ -4,6 +4,8 @@ using System.Collections;
 public class Document : DisposableItem {
 
     protected override void EatenByPlayer() {
-        Debug.Log("Document");
+        SetScore(200);
+        SetItemNumber(2);
+        ownObjectPool.Release(this.gameObject);
     }
 }

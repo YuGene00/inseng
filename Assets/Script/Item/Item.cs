@@ -9,7 +9,8 @@ public abstract class Item : MonoBehaviour {
     //variable
     Move move;
     Vector2 unitDistance = Vector2.zero;
-    ObjectPool ownObjectPool;
+    protected ObjectPool ownObjectPool;
+    int score;
 
     void Awake() {
         Caching();
@@ -53,4 +54,12 @@ public abstract class Item : MonoBehaviour {
     }
 
     protected abstract void EatenByPlayer();
+
+    protected void SetScore(int score) {
+        GameController.GetInstance().score += score;
+    }
+
+    protected void SetItemNumber(int number) {
+        GameController.GetInstance().EatItemNumber += number;
+    }
 }

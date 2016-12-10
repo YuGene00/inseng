@@ -4,6 +4,8 @@ using System.Collections;
 public class Chicken : DisposableItem {
 
     protected override void EatenByPlayer() {
-        Debug.Log("Chicken");
+        SetScore(100);
+        SetItemNumber(1);
+        ownObjectPool.Release(this.gameObject);
     }
 }

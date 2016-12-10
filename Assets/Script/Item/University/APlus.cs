@@ -4,6 +4,8 @@ using System.Collections;
 public class APlus : DisposableItem {
 
     protected override void EatenByPlayer() {
-        Debug.Log("APlus");
+        SetScore(200);
+        SetItemNumber(2);
+        ownObjectPool.Release(this.gameObject);
     }
 }

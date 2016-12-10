@@ -4,6 +4,8 @@ using System.Collections;
 public class SelfTeachingBook : DisposableItem {
 
     protected override void EatenByPlayer() {
-        Debug.Log("SelfTeachingBook");
+        SetScore(100);
+        SetItemNumber(1);
+        ownObjectPool.Release(this.gameObject);
     }
 }

@@ -4,6 +4,8 @@ using System.Collections;
 public class Superior : DisposableItem {
 
     protected override void EatenByPlayer() {
-        Debug.Log("Superior");
+        SetScore(200);
+        SetItemNumber(-1);
+        ownObjectPool.Release(this.gameObject);
     }
 }

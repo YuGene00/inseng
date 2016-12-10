@@ -5,6 +5,8 @@ using System;
 public class Ball : DisposableItem {
 
     protected override void EatenByPlayer() {
-        Debug.Log("ball");
+        SetScore(100);
+        SetItemNumber(1);
+        ownObjectPool.Release(this.gameObject);
     }
 }

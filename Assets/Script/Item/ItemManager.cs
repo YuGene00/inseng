@@ -6,12 +6,17 @@ public class ItemManager : MonoBehaviour {
     //inspector
     public Transform createZoneTrans;
     public GameObject[] childItem;
+    public float enemyPeriod = 0.65f;
     public float normalPeriod = 0.5f;
-    public float specialPeriod = 2f;
+    public float specialPeriod = 0.8f;
+    public float sectionPeriod = 0.8f;
 
     //variable
+    ItemSelector enemySelector;
     ItemSelector normalSelector;
     ItemSelector specialSelector;
+    SectionSelector sectionSelector;
+    SpineSelector spineSelector;
     StarSelector starSelector;
     ChildSelector childSelector;
     StudentSelector studentSelector;
@@ -21,15 +26,19 @@ public class ItemManager : MonoBehaviour {
     ChickenSelector chickenSelector;
     SeniorSelector seniorSelector;
     int specialItem;
+    int oldCount = 0;
+    int sectionNumber = 0;
         
     void Start() {
         SetSelector();
         GameController.NormalEvent += NormalStart;
         GameController.SpecialEvent += SpecialStart;
         GameController.SectionEvent += SectionStart;
+        EnemyStart();
     }
 
     void SetSelector() {
+        spineSelector = new SpineSelector();
         starSelector = new StarSelector();
         childSelector = new ChildSelector();
         studentSelector = new StudentSelector();
@@ -40,21 +49,49 @@ public class ItemManager : MonoBehaviour {
         seniorSelector = new SeniorSelector();
     }
 
+    void EnemyStart() {
+        enemySelector = spineSelector;
+        StartCoroutine("CreateEnemyItem");
+    }
+
     void NormalStart() {
         normalSelector = starSelector;
         StopCoroutine("CreateSpecialItem");
+        StopCoroutine("CreateFlower");
+        StopCoroutine("CreateSectionItem");
         StartCoroutine("CreateNormalItem");
     }
 
     void SpecialStart() {
-        specialItem = Random.Range(0, 4);
+        specialItem = Random.Range(0, 3);
         ChangeSpecialSelector();
         StopCoroutine("CreateNormalItem");
-        StartCoroutine("CreateSpecialItem");
+        StopCoroutine("CreateFlower");
+        StopCoroutine("CreateSectionItem");
+        if (GameController.GetInstance().nowStage == GameController.JOBSTAGE.SENIOR_STAGE) {
+            if(oldCount <= 0) {
+                StartCoroutine("CreateSpecialItem");
+                ++oldCount;
+            } else {
+                oldCount = 0;
+                StopCoroutine("CreateSpecialItem");
+                StartCoroutine("CreateFlower");
+            }
+        } else {
+            StartCoroutine("CreateSpecialItem");
+        }
     }
 
     void SectionStart() {
-
+        StopCoroutine("CreateSpecialItem");
+        StopCoroutine("CreateFlower");
+        StopCoroutine("CreateNormalItem");
+        StartCoroutine("CreateSectionItem");
+        if(sectionNumber <= 4) {
+            sectionNumber = 0;
+        } else {
+            ++sectionNumber;
+        }
     }
 
     void ChangeSpecialSelector() {
@@ -85,6 +122,13 @@ public class ItemManager : MonoBehaviour {
         }
     } 
 
+    IEnumerator CreateEnemyItem() {
+        while(true) {
+            CreateItemWithSelector(enemySelector, 0);
+            yield return new WaitForSeconds(enemyPeriod);
+        }
+    }
+
     IEnumerator CreateNormalItem() {
         while(true) {
             float dice = Random.Range(0f, 1f);
@@ -100,6 +144,20 @@ public class ItemManager : MonoBehaviour {
     IEnumerator CreateSpecialItem() {
         while (true) {
             CreateItemWithSelector(specialSelector, specialItem);
+            yield return new WaitForSeconds(specialPeriod);
+        }
+    }
+
+    IEnumerator CreateSectionItem() {
+        while(true) {
+            CreateItemWithSelector(specialSelector, sectionNumber);
+            yield return new WaitForSeconds(sectionPeriod);
+        }
+    }
+
+    IEnumerator CreateFlower() {
+        while(true) {
+            CreateItemWithSelector(specialSelector, 3);
             yield return new WaitForSeconds(specialPeriod);
         }
     }

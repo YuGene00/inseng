@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Player : MonoBehaviour 
 {
+    //singleton
+    public static Player instance = null;
 
     //caching
     Transform trans;
@@ -23,16 +25,14 @@ public class Player : MonoBehaviour
 	private Sprite[] smileGroup = null;
 	private Sprite[] dropGroup = null;
 
-	public int coreItem = 0;
-	public int passiveItem = 0;
-	public int activeItem = 0;
-
 	public int Life = 5;
 
 	public bool isMuJuck = false;
 
     void Awake() 
 	{
+        instance = this;
+
 		playerAnimator = GetComponent<Animator> ();
 
 		normalGroup = Resources.LoadAll<Sprite>("Images/Character/Normal");
@@ -103,14 +103,14 @@ public class Player : MonoBehaviour
 	{
 		string stageName = GameController.GetInstance ().nowStage.ToString ();
 			
-		if (coreItem <= -5) 
+		if (GameController.GetInstance().EatItemNumber <= -5) 
 		{
 			Life--;
 			LifeChecker ();
 			playerSpriter.sprite = FindSprite (stageName,sadGroup);
 		} 
 
-		else if (coreItem >= 5) 
+		else if (GameController.GetInstance().EatItemNumber >= 5) 
 		{
 			Life++;
 			playerSpriter.sprite = FindSprite (stageName,smileGroup);
@@ -121,7 +121,7 @@ public class Player : MonoBehaviour
 	{
 		string stageName = GameController.GetInstance ().nowStage.ToString ();
 
-		if (coreItem < 8) 
+		if (GameController.GetInstance().EatItemNumber < 8) 
 		{
 			Life--;
 			LifeChecker ();

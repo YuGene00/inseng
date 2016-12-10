@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour 
 {
@@ -50,13 +51,24 @@ public class GameController : MonoBehaviour
 	public static event GameControllerHandler2 DyingSeniEvent;
 	public static event GameControllerHandler2 DieEvent;
 
+    public Text scoreText;
 
 	public JOBSTAGE nowStage = JOBSTAGE.CHILD_STAGE;
 	public EVENTSTAGE nowEvent = EVENTSTAGE.NORMAL_STATE;
 	public float gameSpeed = 800.0f;
-	public int score = 0;
+    private int _score = 0;
+    public int score {
+        get {
+            return _score;
+        }
+        set {
+            _score = value;
+            scoreText.text = _score.ToString();
+        }
+    }
+    public int EatItemNumber = 0;
 
-	public float[] sectionTime = {0.0f,10.0f,5.0f,10.0f,5.0f,10.0f,7.5f};
+    public float[] sectionTime = {0.0f,10.0f,5.0f,10.0f,5.0f,10.0f,7.5f};
 
 	private float timer = 0.0f;
 	private int timerIndex = 0;
@@ -64,6 +76,7 @@ public class GameController : MonoBehaviour
 	void Start () 
 	{
 		timer = Time.time;
+        scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<Text>();
 	}
 
 	public float GetTime() 

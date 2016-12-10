@@ -4,6 +4,8 @@ using System.Collections;
 public class Ramen : DisposableItem {
 
     protected override void EatenByPlayer() {
-        Debug.Log("Ramen");
+        SetScore(80);
+        SetItemNumber(2);
+        ownObjectPool.Release(this.gameObject);
     }
 }

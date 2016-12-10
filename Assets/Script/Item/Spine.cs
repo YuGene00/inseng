@@ -4,6 +4,6 @@ using System.Collections;
 public class Spine : DisposableItem {
 
     protected override void EatenByPlayer() {
-        Debug.Log("Spine");
+        Player.instance.DamagedLife(1);
     }
 }

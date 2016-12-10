@@ -4,6 +4,8 @@ using System.Collections;
 public class Toiletries : DisposableItem {
 
     protected override void EatenByPlayer() {
-        Debug.Log("toiletries");
+        SetScore(100);
+        SetItemNumber(1);
+        ownObjectPool.Release(this.gameObject);
     }
 }

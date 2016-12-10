@@ -20,6 +20,16 @@ public abstract class ItemSelector {
     }
 }
 
+public class SpineSelector : ItemSelector {
+
+    protected override int GenerateItemList() {
+        int itemNo = 1;
+        objectPoolList = new ObjectPool[itemNo];
+        objectPoolList[0] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load("Prefab/Spine") as GameObject);
+        return itemNo;
+    }
+}
+
 public class StarSelector : ItemSelector {
 
     //const
@@ -28,8 +38,8 @@ public class StarSelector : ItemSelector {
     protected override int GenerateItemList() {
         int itemNo = 2;
         objectPoolList = new ObjectPool[2];
-        objectPoolList[0] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load("Prefab/Child/Basket") as GameObject);
-        objectPoolList[1] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load("Prefab/Child/Toiletries") as GameObject);
+        objectPoolList[0] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load("Prefab/Star/YellowStar") as GameObject);
+        objectPoolList[1] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load("Prefab/Star/RedStar") as GameObject);
         return itemNo;
     }
 }
@@ -115,6 +125,19 @@ public class SeniorSelector : ItemSelector {
         objectPoolList[1] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load("Prefab/Senior/BankBook") as GameObject);
         objectPoolList[2] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load("Prefab/Senior/DisappearMan") as GameObject);
         objectPoolList[3] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load("Prefab/Senior/Flower") as GameObject);
+        return itemNo;
+    }
+}
+
+public class SectionSelector : ItemSelector {
+
+    protected override int GenerateItemList() {
+        int itemNo = 4;
+        objectPoolList = new ObjectPool[itemNo];
+        objectPoolList[0] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load("Prefab/Section/TextBook") as GameObject);
+        objectPoolList[1] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load("Prefab/Section/Suit") as GameObject);
+        objectPoolList[2] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load("Prefab/Section/Suit") as GameObject);
+        objectPoolList[3] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load("Prefab/Section/Bouquet") as GameObject);
         return itemNo;
     }
 }

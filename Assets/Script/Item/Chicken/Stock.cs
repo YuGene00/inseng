@@ -4,6 +4,8 @@ using System.Collections;
 public class Stock : DisposableItem {
 
     protected override void EatenByPlayer() {
-        Debug.Log("Stock");
+        SetScore(-100);
+        SetItemNumber(-1);
+        ownObjectPool.Release(this.gameObject);
     }
 }
