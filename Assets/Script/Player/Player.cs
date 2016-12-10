@@ -26,9 +26,10 @@ public class Player : MonoBehaviour
 	public int coreItem = 0;
 	public int passiveItem = 0;
 	public int activeItem = 0;
-	public int score = 0;
 
 	public int Life = 5;
+
+	public bool isMuJuck = false;
 
     void Awake() 
 	{
@@ -48,6 +49,7 @@ public class Player : MonoBehaviour
 		GameController.ChangeStageEvnet += PlayerChange;
 		GameController.SpecialEndEvent += PlayerSpecialEnd;
 		GameController.SectionEndEvent += PlayerSectionEnd;
+		GameController.DyingSeniEvent += DyingSeni;
 	}
 
 	void OnDisable()
@@ -55,6 +57,46 @@ public class Player : MonoBehaviour
 		GameController.ChangeStageEvnet -= PlayerChange;
 		GameController.SpecialEndEvent -= PlayerSpecialEnd;
 		GameController.SectionEndEvent -= PlayerSectionEnd;
+		GameController.DyingSeniEvent -= DyingSeni;
+	}
+
+	public void DamagedLife(int num)
+	{
+		if (isMuJuck)
+			return;
+
+		string stageName = GameController.GetInstance ().nowStage.ToString ();
+
+		Life-=num;
+		LifeChecker();
+		playerSpriter.sprite = FindSprite (stageName,sadGroup);
+
+		isMuJuck = true;
+
+		StartCoroutine ("Delay");
+	}
+
+	void DyingSeni()
+	{
+		StartCoroutine ("Dyning");
+	}
+
+	IEnumerator Dyning()
+	{
+		isMuJuck = true;
+
+		while (Life <= 0)
+		{
+			Life--;
+			Dyning ();
+			yield return new WaitForSeconds(0.5f);
+		}
+	}
+
+	IEnumerator Delay()
+	{
+		yield return new WaitForSeconds (1.0f);
+		isMuJuck = false;
 	}
 
 	void PlayerSpecialEnd()
@@ -101,7 +143,6 @@ public class Player : MonoBehaviour
 			string stageName = GameController.GetInstance().nowStage.ToString();
 			playerSpriter.sprite = FindSprite (stageName,dropGroup);
 		}
-			
 	}
 
 	void PlayerChange(GameController.JOBSTAGE stage)
