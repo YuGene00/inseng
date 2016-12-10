@@ -4,10 +4,8 @@ using System.Collections;
 
 public class BackMover : MonoBehaviour 
 {
-	public float speed = 1.0f;
+	private float speed = 1.0f;
 	public Transform backGroup = null;
-
-	//private GameController.JOBSTAGE nowStage = GameController.JOBSTAGE.CHILD_STAGE;
 
 	private float length = 1280.0f;
 	private Sprite[] spriteGroup = null;
@@ -17,7 +15,10 @@ public class BackMover : MonoBehaviour
 
 	void Start()
 	{
-		ChangeStage(GameController.JOBSTAGE.CHILD_STAGE);
+		speed = GameController.GetInstance ().gameSpeed;
+
+
+		ChangeStage(GameController.GetInstance().nowStage);
 
 		for (int i=0;i<backGroup.childCount;i++)
 		{
@@ -45,8 +46,6 @@ public class BackMover : MonoBehaviour
 
 	void ChangeStage(GameController.JOBSTAGE stage)
 	{
-		//nowStage = stage;
-
 		string stageName = stage.ToString().Split('_')[0];
 
 		spriteGroup = LoadSprite (stageName);
