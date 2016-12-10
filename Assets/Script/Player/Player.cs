@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour 
+{
 
     //caching
     Transform trans;
@@ -9,10 +10,86 @@ public class Player : MonoBehaviour {
     //variable
     Move move;
 
-    void Awake() {
+
+	public SpriteRenderer playerSpriter = null;
+	public SpriteRenderer tmpSpriter = null;
+
+	public BoxCollider2D playerCollider = null;
+
+	private Animator playerAnimator = null;
+
+	private Sprite[] normalGroup = null;
+	private Sprite[] sadGroup = null;
+	private Sprite[] smileGroup = null;
+	private Sprite[] dropGroup = null;
+
+	public int coreItem = 0;
+	public int passiveItem = 0;
+	public int activeItem = 0;
+
+
+	public int Life = 5;
+
+    void Awake() 
+	{
+		playerAnimator = GetComponent<Animator> ();
+
+		normalGroup = Resources.LoadAll<Sprite>("Images/Character/Normal");
+		sadGroup = Resources.LoadAll<Sprite>("Images/Character/Sad");
+		smileGroup = Resources.LoadAll<Sprite>("Images/Character/Smile");
+		dropGroup = Resources.LoadAll<Sprite>("Images/Character/Drop");
+
         Caching();
         InitMove();
     }
+
+	void OnEnable()
+	{
+		GameController.ChangeStageEvnet += PlayerChange;
+		GameController.SpecialEndEvent += PlayerSpecialEnd;
+	}
+
+	void OnDisable()
+	{
+		GameController.ChangeStageEvnet -= PlayerChange;
+		GameController.SpecialEndEvent -= PlayerSpecialEnd;
+	}
+
+	void PlayerSpecialEnd()
+	{
+		if (coreItem <= -5)
+			Life--;
+		else if (coreItem >= 5)
+			Life++;
+	}
+
+	void PlayerChange(GameController.JOBSTAGE stage)
+	{
+		tmpSpriter.sprite = FindSprite (stage.ToString(),normalGroup);
+		playerAnimator.SetTrigger ("Change");
+	}
+
+	public void SetSprite()
+	{
+		playerSpriter.sprite = tmpSpriter.sprite;
+		tmpSpriter.gameObject.SetActive (false);
+
+		Vector2 size = playerSpriter.sprite.bounds.size;
+		playerCollider.size = size;
+	}
+
+	Sprite FindSprite(string name, Sprite[] spriteGroup)
+	{
+		string stageName = name.Split('_')[0];
+		int index = 0;
+
+		for (;index < spriteGroup.Length;index++)
+			if (spriteGroup [index].name.Equals (stageName))
+				break;
+
+		return spriteGroup [index];
+	}
+
 
     void Caching() {
         trans = transform;
