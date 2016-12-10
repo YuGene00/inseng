@@ -20,7 +20,7 @@ public class Player : MonoBehaviour {
 
     void InitMove() {
         move = new Move();
-        move.SetMovableArea(new Vector2(-360, -640), new Vector2(360, 640));
+        move.SetMovableArea(new Vector2(-360f, -640f), new Vector2(360f, 128f));
     }
 
     public Vector2 GetPosition() {

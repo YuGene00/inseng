@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
-public class Ball : Item {
+public class Basket : DisposableItem {
 
     protected override void EatenByPlayer() {
-        Debug.Log("eat");
+        Debug.Log("basket");
     }
 }

@@ -6,9 +6,6 @@ public abstract class Item : MonoBehaviour {
     //caching
     Transform trans;
 
-    //inspector
-    public BackMover backMover;
-
     //variable
     Move move;
     Vector2 unitDistance = Vector2.zero;
@@ -34,7 +31,7 @@ public abstract class Item : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other) {
+    protected virtual void OnTriggerEnter2D(Collider2D other) {
         EatenByPlayer();
     }
 
