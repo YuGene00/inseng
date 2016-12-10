@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
 	public int coreItem = 0;
 	public int passiveItem = 0;
 	public int activeItem = 0;
-
+	public int score = 0;
 
 	public int Life = 5;
 
@@ -47,20 +47,61 @@ public class Player : MonoBehaviour
 	{
 		GameController.ChangeStageEvnet += PlayerChange;
 		GameController.SpecialEndEvent += PlayerSpecialEnd;
+		GameController.SectionEndEvent += PlayerSectionEnd;
 	}
 
 	void OnDisable()
 	{
 		GameController.ChangeStageEvnet -= PlayerChange;
 		GameController.SpecialEndEvent -= PlayerSpecialEnd;
+		GameController.SectionEndEvent -= PlayerSectionEnd;
 	}
 
 	void PlayerSpecialEnd()
 	{
-		if (coreItem <= -5)
+		string stageName = GameController.GetInstance ().nowStage.ToString ();
+			
+		if (coreItem <= -5) 
+		{
 			Life--;
-		else if (coreItem >= 5)
+			LifeChecker ();
+			playerSpriter.sprite = FindSprite (stageName,sadGroup);
+		} 
+
+		else if (coreItem >= 5) 
+		{
 			Life++;
+			playerSpriter.sprite = FindSprite (stageName,smileGroup);
+		}
+	}
+
+	void PlayerSectionEnd()
+	{
+		string stageName = GameController.GetInstance ().nowStage.ToString ();
+
+		if (coreItem < 8) 
+		{
+			Life--;
+			LifeChecker ();
+			playerSpriter.sprite = FindSprite (stageName,sadGroup);
+			GameController.GetInstance().GlobalChange(1);
+		} 
+		else
+		{
+			Life+=2;
+			playerSpriter.sprite = FindSprite (stageName,smileGroup);
+			GameController.GetInstance().GlobalChange(0);
+		}
+	}
+
+	public void LifeChecker()
+	{
+		if (Life <= 0) 
+		{
+			string stageName = GameController.GetInstance().nowStage.ToString();
+			playerSpriter.sprite = FindSprite (stageName,dropGroup);
+		}
+			
 	}
 
 	void PlayerChange(GameController.JOBSTAGE stage)

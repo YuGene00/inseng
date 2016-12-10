@@ -46,6 +46,7 @@ public class GameController : MonoBehaviour
 	public static event GameControllerHandler2 SpecialEvent;
 	public static event GameControllerHandler2 SectionEvent;
 	public static event GameControllerHandler2 SpecialEndEvent;
+	public static event GameControllerHandler2 SectionEndEvent;
 
 
 	public JOBSTAGE nowStage = JOBSTAGE.CHILD_STAGE;
@@ -162,11 +163,15 @@ public class GameController : MonoBehaviour
 		}
 		else if (timerIndex.Equals(6)) // end
 		{
-			//Section
-			//ChangeJob (0 or 1);
-			ChangeJob ();
-			ChangeStage();
+			if (SectionEndEvent != null)
+				SectionEndEvent();
 		}
+	}
+
+	public void GlobalChange(int index = 0)
+	{
+		ChangeJob (index);
+		ChangeStage();
 	}
 
 	public void ChangeStage()
