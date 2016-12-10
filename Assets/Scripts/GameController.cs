@@ -47,11 +47,14 @@ public class GameController : MonoBehaviour
 	public static event GameControllerHandler2 SectionEvent;
 	public static event GameControllerHandler2 SpecialEndEvent;
 	public static event GameControllerHandler2 SectionEndEvent;
+	public static event GameControllerHandler2 DyingSeniEvent;
+	public static event GameControllerHandler2 DieEvent;
 
 
 	public JOBSTAGE nowStage = JOBSTAGE.CHILD_STAGE;
 	public EVENTSTAGE nowEvent = EVENTSTAGE.NORMAL_STATE;
 	public float gameSpeed = 800.0f;
+	public int score = 0;
 
 	public float[] sectionTime = {0.0f,10.0f,5.0f,10.0f,5.0f,10.0f,7.5f};
 
@@ -118,6 +121,13 @@ public class GameController : MonoBehaviour
 		}
 		else if (timerIndex.Equals (3))  // 3 -> 4 S
 		{
+			if (nowStage.Equals (JOBSTAGE.SENIOR_STAGE))
+			{
+				if (DyingSeniEvent != null)
+					DyingSeniEvent ();
+				return;
+			}
+
 			timerIndex++;
 
 			nowEvent = EVENTSTAGE.SPECIAL_STATE;
