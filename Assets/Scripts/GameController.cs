@@ -45,11 +45,6 @@ public class GameController : MonoBehaviour
 
 	void Update ()
 	{
-		SpriteItem ();
-	}
-
-	void SpriteItem()
-	{
 		if (Time.time-timer>sectionTime[timerIndex])
 			ChangeSection();
 	}
@@ -58,38 +53,70 @@ public class GameController : MonoBehaviour
 	{
 		timer = Time.time;
 
-		if ((timerIndex % 2).Equals (0))
-		//if (NormalEvent != null)
-			Debug.Log ("Normal");//NormalEvent();
-		else
-			//if(SpecialEvent!=null)
-				Debug.Log ("Special");//SpecialEvent();
-
-		timerIndex++;
-
-		if (timerIndex >= sectionTime.Length) 
+		if (timerIndex.Equals (0)) 
 		{
-			/*if( nowStage.Equals(JOBSTAGE.STUDENT_STAGE)      || 
-				nowStage.Equals(JOBSTAGE.UNIVERSITY_STAGE)   ||
-				nowStage.Equals(JOBSTAGE.UNEMPLOYED_STAGE_0) ||
-				nowStage.Equals(JOBSTAGE.UNEMPLOYED_STAGE_1) ||
-				nowStage.Equals(JOBSTAGE.WORKER_STAGE_0)     ||
-				nowStage.Equals(JOBSTAGE.WORKER_STAGE_1)     ||
-				nowStage.Equals(JOBSTAGE.CHICKEN_STAGE)         )
+			timerIndex++;
+
+			if (NormalEvent != null)
+				NormalEvent();
+		}
+		else if (timerIndex.Equals (1)) 
+		{
+			timerIndex++;
+
+			if(SpecialEvent!=null)
+				SpecialEvent();
+		}
+		else if (timerIndex.Equals (2)) 
+		{
+			if (nowStage.Equals (JOBSTAGE.CHILD_STAGE))
 			{
-				//Section 아직 생각 중 
-
-				//ChangeJob (0 or 1);
-
-			}*/
-			//else
-			{
-				Debug.Log ("Change");
-
 				ChangeJob ();
+				ChangeStage ();
 
-				ChangeStage();
+				return;
 			}
+
+			timerIndex++;
+
+			if (NormalEvent != null)
+				NormalEvent();
+		}
+		else if (timerIndex.Equals (3)) 
+		{
+			if(SpecialEvent!=null)
+				SpecialEvent();
+
+			if (nowStage.Equals (JOBSTAGE.STUDENT_STAGE) ||
+			   nowStage.Equals (JOBSTAGE.UNIVERSITY_STAGE) ||
+			   nowStage.Equals (JOBSTAGE.UNEMPLOYED_STAGE_0) ||
+			   nowStage.Equals (JOBSTAGE.UNEMPLOYED_STAGE_1) ||
+			   nowStage.Equals (JOBSTAGE.WORKER_STAGE_0) ||
+			   nowStage.Equals (JOBSTAGE.WORKER_STAGE_1) ||
+			   nowStage.Equals (JOBSTAGE.CHICKEN_STAGE)) {
+
+				timerIndex++;
+			} 
+
+			else
+			{
+				ChangeJob ();
+				ChangeStage();
+
+				return;
+			}
+		}
+		else if (timerIndex.Equals(4)) 
+		{
+			if (SectionEvent != null)
+				SectionEvent();
+			//
+		}
+		else
+		{
+			//ChangeJob (0 or 1);
+			ChangeJob ();
+			ChangeStage();
 		}
 	}
 
