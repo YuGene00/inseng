@@ -18,12 +18,14 @@ public class SoundContoller : MonoBehaviour
 	{
 		GameController.SectionEvent += Change1;
 		GameController.SectionEndEvent += Change2;
+		GameController.DyingSeniEvent += Change3;
 	}
 
 	void OnDisable()
 	{
 		GameController.SectionEvent -= Change1;
 		GameController.SectionEndEvent -= Change2;
+		GameController.DyingSeniEvent -= Change3;
 	}
 
 	void Change1()
@@ -35,6 +37,12 @@ public class SoundContoller : MonoBehaviour
 	void Change2()
 	{
 		soundSource.clip = soundClip [0];
+		soundSource.Play ();
+	}
+
+	void Change3()
+	{
+		soundSource.clip = soundClip [2];
 		soundSource.Play ();
 	}
 }
