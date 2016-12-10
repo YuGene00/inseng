@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour
 
 	public JOBSTAGE nowStage = JOBSTAGE.CHILD_STAGE;
 	public EVENTSTAGE nowEvent = EVENTSTAGE.NORMAL_STATE;
-	public float gameSpeed = 1000.0f;
+	public float gameSpeed = 800.0f;
 
 	public float[] sectionTime = {0.0f,20.0f,10.0f,20.0f,10.0f,20.0f,15.0f};
 
@@ -70,8 +70,6 @@ public class GameController : MonoBehaviour
 	void ChangeSection()
 	{
 		timer = Time.time;
-
-		Debug.Log (timerIndex);
 
 		if (timerIndex.Equals (0)) // 0 -> 1 N
 		{
