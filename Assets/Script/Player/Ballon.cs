@@ -12,11 +12,6 @@ public class Ballon : MonoBehaviour
 	{
 		number = player.Life;
 
-		BallonUpdate ();
-	}
-
-	void BallonUpdate()
-	{
 		for (int i = 0; i < ballonGroup.childCount; i++)
 			ballonGroup.GetChild (i).gameObject.SetActive (false);
 
@@ -28,8 +23,25 @@ public class Ballon : MonoBehaviour
 	{
 		if (!number.Equals (player.Life)) 
 		{
+			for (int i = 0; i <player.Life; i++)
+				ballonGroup.GetChild (i).gameObject.SetActive (true);
+
+			for (int i = player.Life; i < ballonGroup.childCount; i++)
+			{
+				if (ballonGroup.GetChild (i).gameObject.activeSelf) 
+				{
+					ballonGroup.GetChild (i).GetComponentInChildren<Animator> ().SetTrigger ("Boom");
+					StartCoroutine (ActiveOff (i));
+				}
+			}
 			number = player.Life;
-			BallonUpdate ();
 		}
+	}
+
+	IEnumerator ActiveOff(int index)
+	{
+		yield return new WaitForSeconds (0.5f);
+
+		ballonGroup.GetChild (index).gameObject.SetActive (false);
 	}
 }
