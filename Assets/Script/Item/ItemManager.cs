@@ -38,6 +38,7 @@ public class ItemManager : MonoBehaviour {
     }
 
     void SetSelector() {
+        sectionSelector = new SectionSelector();
         spineSelector = new SpineSelector();
         starSelector = new StarSelector();
         childSelector = new ChildSelector();
@@ -150,7 +151,7 @@ public class ItemManager : MonoBehaviour {
 
     IEnumerator CreateSectionItem() {
         while(true) {
-            CreateItemWithSelector(specialSelector, sectionNumber);
+            CreateItemWithSelector(sectionSelector, sectionNumber);
             yield return new WaitForSeconds(sectionPeriod);
         }
     }
