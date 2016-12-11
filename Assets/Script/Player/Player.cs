@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour 
 {
@@ -12,6 +14,11 @@ public class Player : MonoBehaviour
     //variable
     Move move;
 
+    //inspector
+    public GameObject EndCanvas;
+    public Text highScoreText;
+    public Text currentScoreText;
+    public ItemManager itemManager;
 
 	public SpriteRenderer playerSpriter = null;
 	public SpriteRenderer tmpSpriter = null;
@@ -24,6 +31,8 @@ public class Player : MonoBehaviour
 	private Sprite[] sadGroup = null;
 	private Sprite[] smileGroup = null;
 	private Sprite[] dropGroup = null;
+
+    public Ballon ballon;
 
 	public int Life = 5;
 
@@ -142,8 +151,35 @@ public class Player : MonoBehaviour
 		{
 			string stageName = GameController.GetInstance().nowStage.ToString();
 			playerSpriter.sprite = FindSprite (stageName,dropGroup);
+            Result();
 		}
 	}
+
+    void Result() {
+        Time.timeScale = 0f;
+        ballon.PlaySound();
+        itemManager.StopManager();
+        EndCanvas.SetActive(true);
+        int currentScore = GameController.GetInstance().score;
+        if (DataSender.highScore < currentScore) {
+            DataSender.highScore = currentScore;
+        }
+        highScoreText.text = DataSender.highScore.ToString();
+        currentScoreText.text = currentScore.ToString();
+    }
+
+    public void Reload() {
+        GameController.DeleteInstance();
+        Time.timeScale = 1f;
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+    }
+
+    public void Title() {
+        GameController.DeleteInstance();
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Title");
+    }
 
 	void PlayerChange(GameController.JOBSTAGE stage)
 	{

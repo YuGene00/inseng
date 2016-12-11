@@ -27,6 +27,17 @@ public class GameController : MonoBehaviour
 	private static GameController instance;  
 	private static GameObject container;  
 
+    public static void DeleteInstance() {
+        instance = null;
+        NormalEvent = null;
+        SpecialEvent = null;
+        SectionEvent = null;
+        SpecialEndEvent = null;
+        SectionEndEvent = null;
+        DyingSeniEvent = null;
+        DieEvent = null;
+    }
+
 	public static GameController GetInstance()  
 	{  
 		if( !instance )  
@@ -52,6 +63,8 @@ public class GameController : MonoBehaviour
 	public static event GameControllerHandler2 DieEvent;
 
     public Text scoreText;
+    AudioSource audioSource;
+    public AudioClip coinSound;
 
 	public JOBSTAGE nowStage = JOBSTAGE.CHILD_STAGE;
 	public EVENTSTAGE nowEvent = EVENTSTAGE.NORMAL_STATE;
@@ -64,6 +77,7 @@ public class GameController : MonoBehaviour
         set {
             _score = value;
             scoreText.text = _score.ToString();
+            audioSource.Play();
         }
     }
     public int EatItemNumber = 0;
@@ -77,7 +91,10 @@ public class GameController : MonoBehaviour
 	{
 		timer = Time.time;
         scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<Text>();
-	}
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = Resources.Load<AudioClip>("EffectSound/Coin") as AudioClip;
+        audioSource.volume = 0.2f;
+    }
 
 	public float GetTime() 
 	{

@@ -28,7 +28,7 @@ public class ItemManager : MonoBehaviour {
     int specialItem;
     int oldCount = 0;
     int sectionNumber = 0;
-        
+
     void Start() {
         SetSelector();
         GameController.NormalEvent += NormalStart;
@@ -170,9 +170,13 @@ public class ItemManager : MonoBehaviour {
 
     Vector2 SelectGenPoint() {
         Vector2 genPoint;
-        float halfZoneXScale = createZoneTrans.localScale.x / 2;
+        float halfZoneXScale = 720f / 2;
         genPoint.x = Random.Range(-halfZoneXScale, halfZoneXScale);
-        genPoint.y = createZoneTrans.position.y;
+        genPoint.y = 790f;
         return genPoint;
+    }
+
+    public void StopManager() {
+        StopAllCoroutines();
     }
 }

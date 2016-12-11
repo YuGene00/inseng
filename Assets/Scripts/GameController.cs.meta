@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: e0180446ff74d074984ae5359b52d8ff
-timeCreated: 1481325372
+timeCreated: 1481415304
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - scoreText: {instanceID: 0}
+  - coinSound: {fileID: 8300000, guid: 37f6d5c17a4e98648a68fdcbfaa833dd, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

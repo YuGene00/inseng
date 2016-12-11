@@ -17,7 +17,11 @@ public class Ballon : MonoBehaviour
 
 		for (int i = 0; i <number; i++)
 			ballonGroup.GetChild (i).gameObject.SetActive (true);
-	}
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = Resources.Load<AudioClip>("EffectSound/Explosion") as AudioClip;
+        audioSource.volume = 1f;
+    }
 
 	void Update ()
 	{
@@ -31,17 +35,25 @@ public class Ballon : MonoBehaviour
 				if (ballonGroup.GetChild (i).gameObject.activeSelf) 
 				{
 					ballonGroup.GetChild (i).GetComponentInChildren<Animator> ().SetTrigger ("Boom");
-					StartCoroutine (ActiveOff (i));
+                    PlaySound();
+                    StartCoroutine (ActiveOff (i));
 				}
 			}
 			number = player.Life;
 		}
 	}
 
-	IEnumerator ActiveOff(int index)
+    AudioSource audioSource;
+    public AudioClip boomSound;
+
+    IEnumerator ActiveOff(int index)
 	{
 		yield return new WaitForSeconds (0.5f);
 
 		ballonGroup.GetChild (index).gameObject.SetActive (false);
-	}
+    }
+
+    public void PlaySound() {
+        audioSource.Play();
+    }
 }
