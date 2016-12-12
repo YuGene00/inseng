@@ -5,49 +5,60 @@ public class ItemManager : MonoBehaviour {
 
     //inspector
     public Transform createZoneTrans;
-    public GameObject[] childItem;
-    public float enemyPeriod = 0.65f;
-    public float normalPeriod = 0.5f;
-    public float specialPeriod = 0.8f;
-    public float sectionPeriod = 0.8f;
+    public float enemyItemPeriod = 0.65f;
+    public float normalItemPeriod = 0.5f;
+    public float specialItemPeriod = 0.8f;
+    public float branchItemPeriod = 0.8f;
 
     //variable
-    ItemSelector enemySelector;
-    ItemSelector normalSelector;
-    ItemSelector specialSelector;
-    SectionSelector sectionSelector;
-    SpineSelector spineSelector;
-    StarSelector starSelector;
-    ChildSelector childSelector;
-    StudentSelector studentSelector;
-    UniversitySelector universitySelector;
-    UnemployedSelector unemploySelector;
-    WorkerSelector workerSelector;
-    ChickenSelector chickenSelector;
-    SeniorSelector seniorSelector;
+    ItemSelector[] enemySelector;
+    ItemSelector[] normalSelector;
+    ItemSelector[] specialSelector;
+    ItemSelector[] branchSelector;
+    int specialEventType;
+
     int specialItem;
     int oldCount = 0;
     int sectionNumber = 0;
 
     void Start() {
-        SetSelector();
-        GameController.NormalEvent += NormalStart;
-        GameController.SpecialEvent += SpecialStart;
-        GameController.SectionEvent += SectionStart;
-        EnemyStart();
+        Initialize();
     }
 
-    void SetSelector() {
-        sectionSelector = new SectionSelector();
-        spineSelector = new SpineSelector();
-        starSelector = new StarSelector();
-        childSelector = new ChildSelector();
-        studentSelector = new StudentSelector();
-        universitySelector = new UniversitySelector();
-        unemploySelector = new UnemployedSelector();
-        workerSelector = new WorkerSelector();
-        chickenSelector = new ChickenSelector();
-        seniorSelector = new SeniorSelector();
+    void Initialize() {
+        SetEnemySelectors();
+        SetNormalSelectors();
+        SetSpecialSelectors();
+        SetBranchSelectors();
+    }
+
+    void SetEnemySelectors() {
+        enemySelector = new ItemSelector[1];
+        enemySelector[0] = new SpineSelector();
+    }
+
+    void SetNormalSelectors() {
+        normalSelector = new ItemSelector[1];
+        normalSelector[0] = new StarSelector();
+    }
+
+    void SetSpecialSelectors() {
+        specialSelector = new ItemSelector[(int)EventManager.SpecialType.END];
+        specialSelector[(int)EventManager.SpecialType.CHILD] = new ChildSelector();
+        specialSelector[(int)EventManager.SpecialType.STUDENT] = new StudentSelector();
+        specialSelector[(int)EventManager.SpecialType.UNIVERSITY] = new UniversitySelector();
+        specialSelector[(int)EventManager.SpecialType.UNEMPLOYED] = new UnemployedSelector();
+        specialSelector[(int)EventManager.SpecialType.WORKER] = new WorkerSelector();
+        specialSelector[(int)EventManager.SpecialType.CHICKEN] = new ChickenSelector();
+        specialSelector[(int)EventManager.SpecialType.SENIOR] = new SeniorSelector();
+    }
+
+    void SetBranchSelectors() {
+        branchSelector = new ItemSelector[(int)EventManager.BranchType.END];
+        branchSelector[(int)EventManager.BranchType.CSAT] = new CSATSelector();
+        branchSelector[(int)EventManager.BranchType.JOBHUNT] = new JobHuntSelector();
+        branchSelector[(int)EventManager.BranchType.DARWINISM] = new DarwinismSelector();
+        branchSelector[(int)EventManager.BranchType.MARRIAGE] = new MarriageSelector();
     }
 
     void EnemyStart() {
@@ -163,6 +174,20 @@ public class ItemManager : MonoBehaviour {
         }
     }
 
+    void CreateNormalItem() {
+        float dice = Random.Range(0f, 1f);
+        if (dice > 0.3f) {
+            CreateItemWithSelector(normalSelector[0], 0);
+        }
+        else {
+            CreateItemWithSelector(normalSelector[0], 1);
+        }
+    }
+
+    void CreateSpecialItem() {
+        CreateItemWithSelector(specialSelector[specialEventType], specialItem);
+    }
+
     void CreateItemWithSelector(ItemSelector itemSelector, int itemNo) {
         Vector2 genPoint = SelectGenPoint();
         GameObject item = itemSelector.SelectItem(itemNo);
@@ -175,9 +200,5 @@ public class ItemManager : MonoBehaviour {
         genPoint.x = Random.Range(-halfZoneXScale, halfZoneXScale);
         genPoint.y = 790f;
         return genPoint;
-    }
-
-    public void StopManager() {
-        StopAllCoroutines();
     }
 }

@@ -38,12 +38,12 @@ public abstract class Item : MonoBehaviour {
         while(true) {
             unitDistance.y = GameController.GetInstance().gameSpeed * Time.deltaTime;
             move.MoveTransToDest(trans, (Vector2)trans.position - unitDistance);
-            DestroyOutOfArea();
+            DestroyIfOutOfArea();
             yield return null;
         }
     }
 
-    void DestroyOutOfArea() {
+    void DestroyIfOutOfArea() {
         if(!move.IsInArea(trans.position)) {
             ownObjectPool.Release(this.gameObject);
         }
