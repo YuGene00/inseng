@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
 
 		isMuJuck = true;
 
-		StartCoroutine ("Delay");
+		//StartCoroutine ("Delay");
 	}
 
 	void DyingSeni()
@@ -122,6 +122,10 @@ public class Player : MonoBehaviour
 		else if (GameController.GetInstance().EatItemNumber >= 5) 
 		{
 			Life++;
+
+            Life = Mathf.Clamp(Life,0,6);
+
+
 			playerSpriter.sprite = FindSprite (stageName,smileGroup);
 		}
 	}
@@ -140,7 +144,8 @@ public class Player : MonoBehaviour
 		else
 		{
 			Life+=2;
-			playerSpriter.sprite = FindSprite (stageName,smileGroup);
+            Life = Mathf.Clamp(Life, 0, 6);
+            playerSpriter.sprite = FindSprite (stageName,smileGroup);
 			GameController.GetInstance().GlobalChange(0);
 		}
 	}

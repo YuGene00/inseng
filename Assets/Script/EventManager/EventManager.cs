@@ -3,7 +3,22 @@ using System.Collections;
 
 public class EventManager : MonoBehaviour {
 
+    //singleton
+    public static EventManager instacne = null;
+
     //enum
+    public enum EventType {
+        NORMAL, SPECIAL, BRANCH
+    }
+    
+    public enum EnemyType {
+        Spine
+    }
+
+    public enum NormalType {
+        Star
+    }
+
     public enum SpecialType {
         CHILD, STUDENT, UNIVERSITY, UNEMPLOYED, WORKER, CHICKEN, SENIOR, END
     }
@@ -12,42 +27,106 @@ public class EventManager : MonoBehaviour {
         CSAT, JOBHUNT, DARWINISM, MARRIAGE, END
     }
 
-	//variable
-    delegate void CallForNormal();
-    event CallForNormal EventForNormalStart;
-    event CallForNormal EventForNormalEnd;
-    delegate void CallForSpecial(SpecialType eventType);
-    event CallForSpecial EventForSpecialStart;
-    event CallForSpecial EventForSpecialEnd;
-    delegate void CallForBranch(BranchType eventType);
-    event CallForBranch EventForBranchStart;
-    event CallForBranch EventForBranchEnd;
+    public struct EventData {
+        public EventType type;
+        public int detail;
+    }
+
+    //variable
+    EnemyType currentEnemy;
+    public EnemyType GetCurrentEnemy {
+        get {
+            return currentEnemy;
+        }
+    }
+    EventData currentEvent;
+    public EventData GetCurrentEvent {
+        get {
+            return currentEvent;
+        }
+    }
+    public delegate void CallForEvent();
+    event CallForEvent EventForEnemyStart;
+    event CallForEvent EventForEnemyEnd;
+    event CallForEvent EventForNormalStart;
+    event CallForEvent EventForNormalEnd;
+    event CallForEvent EventForSpecialStart;
+    event CallForEvent EventForSpecialEnd;
+    event CallForEvent EventForBranchStart;
+    event CallForEvent EventForBranchEnd;
+
+    void Awake() {
+        instacne = this;
+    }
 
     IEnumerator Start() {
         yield return null;
     }
 
-    public void AddEventForNormalStart(CallForNormal normalEvent) {
-        EventForNormalStart += normalEvent;
+    void EnemyStart(EnemyType type = EnemyType.Spine) {
+        currentEnemy = type;
+        EventForEnemyStart();
     }
 
-    public void AddEventForNormalEnd(CallForNormal normalEvent) {
-        EventForNormalEnd += normalEvent;
+    void EnemyEnd() {
+        EventForEnemyEnd();
     }
 
-    public void AddEventForSpecialStart(CallForSpecial specialEvent) {
-        EventForSpecialStart += specialEvent;
+    void NormalStart(NormalType detail = NormalType.Star) {
+        currentEvent.type = EventType.NORMAL;
+        currentEvent.detail = (int)detail;
+        EventForNormalStart();
+    }
+    
+    void NormalEnd() {
+        EventForNormalEnd();
     }
 
-    public void AddEventForSpecialStart(CallForSpecial specialEvent) {
-        EventForSpecialEnd += specialEvent;
+    void SpecialStart(SpecialType detail) {
+        currentEvent.type = EventType.SPECIAL;
+        currentEvent.detail = (int)detail;
+        EventForSpecialStart();
     }
 
-    public void AddEventForBranchStart(CallForBranch branchEvent) {
-        EventForBranchStart += branchEvent;
+    void SpecialEnd() {
+        EventForSpecialEnd();
     }
 
-    public void AddEventForBranchEnd(CallForBranch branchEvent) {
-        EventForBranchEnd += branchEvent;
+    void BranchStart(BranchType detail) {
+        currentEvent.type = EventType.BRANCH;
+        currentEvent.detail = (int)detail;
+        EventForBranchStart();
+    }
+
+    void BranchEnd() {
+        EventForBranchEnd();
+    }
+
+    public void AddEventToTypeForStart(CallForEvent eventFunc, EventType type) {
+        switch(type) {
+            case EventType.NORMAL:
+                EventForNormalStart += eventFunc;
+                break;
+            case EventType.SPECIAL:
+                EventForSpecialStart += eventFunc;
+                break;
+            case EventType.BRANCH:
+                EventForBranchStart += eventFunc;
+                break;
+        }
+    }
+
+    public void AddEventToTypeForEnd(CallForEvent eventFunc, EventType type) {
+        switch (type) {
+            case EventType.NORMAL:
+                EventForNormalEnd += eventFunc;
+                break;
+            case EventType.SPECIAL:
+                EventForSpecialEnd += eventFunc;
+                break;
+            case EventType.BRANCH:
+                EventForBranchEnd += eventFunc;
+                break;
+        }
     }
 }

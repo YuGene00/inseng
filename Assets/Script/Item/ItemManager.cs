@@ -3,23 +3,29 @@ using System.Collections;
 
 public class ItemManager : MonoBehaviour {
 
+    //enum
+    enum StarType {
+        YELLOW, RED
+    } 
+
     //inspector
     public Transform createZoneTrans;
     public float enemyItemPeriod = 0.65f;
     public float normalItemPeriod = 0.5f;
     public float specialItemPeriod = 0.8f;
     public float branchItemPeriod = 0.8f;
+    public float redStarChance = 0.7f;
 
     //variable
     ItemSelector[] enemySelector;
     ItemSelector[] normalSelector;
     ItemSelector[] specialSelector;
     ItemSelector[] branchSelector;
-    int specialEventType;
-
-    int specialItem;
-    int oldCount = 0;
-    int sectionNumber = 0;
+    delegate WaitForSeconds createItemAndReturnWait();
+    WaitForSeconds waitForEnemy;
+    WaitForSeconds waitForNormal;
+    WaitForSeconds waitForSpecial;
+    WaitForSeconds waitForBranch;
 
     void Start() {
         Initialize();
@@ -30,6 +36,7 @@ public class ItemManager : MonoBehaviour {
         SetNormalSelectors();
         SetSpecialSelectors();
         SetBranchSelectors();
+        SetWaitForSeconds();
     }
 
     void SetEnemySelectors() {
@@ -59,6 +66,13 @@ public class ItemManager : MonoBehaviour {
         branchSelector[(int)EventManager.BranchType.JOBHUNT] = new JobHuntSelector();
         branchSelector[(int)EventManager.BranchType.DARWINISM] = new DarwinismSelector();
         branchSelector[(int)EventManager.BranchType.MARRIAGE] = new MarriageSelector();
+    }
+
+    void SetWaitForSeconds() {
+        waitForEnemy = new WaitForSeconds(enemyItemPeriod);
+        waitForNormal = new WaitForSeconds(normalItemPeriod);
+        waitForSpecial = new WaitForSeconds(specialItemPeriod);
+        waitForBranch = new WaitForSeconds(branchItemPeriod);
     }
 
     void EnemyStart() {
@@ -141,6 +155,21 @@ public class ItemManager : MonoBehaviour {
         }
     }
 
+    WaitForSeconds CreateEnemyItemAndReturnWait() {
+        CreateItemWithSelector(0, enemySelector[(int)EventManager.instacne.GetCurrentEnemy]);
+        return waitForEnemy;
+    }
+
+    WaitForSeconds CreateNormalItemAndReturnWait() {
+        float dice = Random.Range(0f, 1f);
+        if (dice > 0.3f) {
+            CreateItemWithSelector((int)StarType.YELLOW, normalSelector[(int)EventManager.instacne.GetCurrentEvent.detail]);
+        } else {
+            CreateItemWithSelector((int)StarType.RED, normalSelector[0]);
+        }
+        return waitForNormal;
+    }
+
     IEnumerator CreateNormalItem() {
         while(true) {
             float dice = Random.Range(0f, 1f);
@@ -174,21 +203,11 @@ public class ItemManager : MonoBehaviour {
         }
     }
 
-    void CreateNormalItem() {
-        float dice = Random.Range(0f, 1f);
-        if (dice > 0.3f) {
-            CreateItemWithSelector(normalSelector[0], 0);
-        }
-        else {
-            CreateItemWithSelector(normalSelector[0], 1);
-        }
-    }
-
     void CreateSpecialItem() {
         CreateItemWithSelector(specialSelector[specialEventType], specialItem);
     }
 
-    void CreateItemWithSelector(ItemSelector itemSelector, int itemNo) {
+    void CreateItemWithSelector(int itemNo, ItemSelector itemSelector) {
         Vector2 genPoint = SelectGenPoint();
         GameObject item = itemSelector.SelectItem(itemNo);
         item.transform.position = genPoint;
@@ -196,9 +215,9 @@ public class ItemManager : MonoBehaviour {
 
     Vector2 SelectGenPoint() {
         Vector2 genPoint;
-        float halfZoneXScale = 720f / 2;
+        float halfZoneXScale = createZoneTrans.localScale.x / 2;
         genPoint.x = Random.Range(-halfZoneXScale, halfZoneXScale);
-        genPoint.y = 790f;
+        genPoint.y = createZoneTrans.position.y;
         return genPoint;
     }
 }
