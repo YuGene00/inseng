@@ -86,16 +86,26 @@ public abstract class MissionSelector {
 
     }
 
-    protected abstract int CreateMissionList();
+    protected abstract int CreateMissionListAndReturnNo();
+
+    public Mission SelectMission(int missionNo) {
+        return missionList[missionNo];
+    }
 }
 
 public class ChildMissionSelector : MissionSelector {
 
-    protected override int CreateMissionList() {
+    protected override int CreateMissionListAndReturnNo() {
         Mission[] tempList = {
-            new ConstantMission("혼자서도 잘해요", "심부름에 성공하세요."),
-            new ConstantMission("깨끗이 씻어요", "깔끔하게 씻어요."),
-            new ConstantMission("친구와 놀았어요", "놀이터에서 친구들과 함께 뛰어 놀아요.")
+            new Mission("혼자서도 잘해요", "심부름에 성공하세요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(1)),
+            new Mission("깨끗이 씻어요", "깔끔하게 씻어요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(1)),
+            new Mission("친구와 놀았어요", "놀이터에서 친구들과 함께 뛰어 놀아요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(1)),
         };
         missionList = tempList;
         return missionList.Length;
@@ -104,11 +114,17 @@ public class ChildMissionSelector : MissionSelector {
 
 public class StudentMissionSelector : MissionSelector {
 
-    protected override int CreateMissionList() {
+    protected override int CreateMissionListAndReturnNo() {
         Mission[] tempList = {
-            new ConstantMission("사춘기가 왔어요", "내 마음대로 살 거예요. 다 비켜!"),
-            new ConstantMission("꿈을 찾아 떠나요", "이 세상은 틀렸어! 나만의 꿈을 찾도록 해요."),
-            new ConstantMission("모범생이 될래요", "착실하게 공부할래요.")
+            new Mission("사춘기가 왔어요", "내 마음대로 살 거예요. 다 비켜!",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(-1)),
+            new Mission("꿈을 찾아 떠나요", "이 세상은 틀렸어! 나만의 꿈을 찾도록 해요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(1)),
+            new Mission("모범생이 될래요", "착실하게 공부할래요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(1)),
         };
         missionList = tempList;
         return missionList.Length;
@@ -117,11 +133,17 @@ public class StudentMissionSelector : MissionSelector {
 
 public class UniversityMissionSelector : MissionSelector {
 
-    protected override int CreateMissionList() {
+    protected override int CreateMissionListAndReturnNo() {
         Mission[] tempList = {
-            new ConstantMission("죽음의 팀플", "팀플이 시작됩니다."),
-            new ConstantMission("벚꽃의 꽃말은 중간고사", "교수님으로부터 살아 남으세요."),
-            new ConstantMission("장학금을 받아요", "학자금 대출에서 벗어 나세요.")
+            new Mission("죽음의 팀플", "팀플이 시작됩니다.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(1)),
+            new Mission("벚꽃의 꽃말은 중간고사", "교수님으로부터 살아 남으세요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(-1)),
+            new Mission("장학금을 받아요", "학자금 대출에서 벗어 나세요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(2)),
         };
         missionList = tempList;
         return missionList.Length;
@@ -130,18 +152,78 @@ public class UniversityMissionSelector : MissionSelector {
 
 public class UnemployedMissionSelector : MissionSelector {
 
-    protected override int CreateMissionList() {
+    protected override int CreateMissionListAndReturnNo() {
         Mission[] tempList = {
-            new ConstantMission("돈을 법시다", "아르바이트를 구했어요."),
-            new ConstantMission("돈을 탕진합시다", "인생은 한 방! 신나게 놀아요."),
-            new ConstantMission("집이 좋아", "집이 최고예요. 방 구석에서 놀아요.")
+            new Mission("돈을 법시다", "아르바이트를 구했어요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(1)),
+            new Mission("돈을 탕진합시다", "인생은 한 방! 신나게 놀아요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(-1)),
+            new Mission("집이 좋아", "집이 최고예요. 방 구석에서 놀아요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(2)),
         };
         missionList = tempList;
         return missionList.Length;
     }
 }
 
-public abstract class Mission {
+public class WorkerMissionSelector : MissionSelector {
+
+    protected override int CreateMissionListAndReturnNo() {
+        Mission[] tempList = {
+            new Mission("서류 통과", "상사에게 칭찬 받으세요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(2)),
+            new Mission("이직하자!", "이직에 성공하세요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(3)),
+            new Mission("상사가 화났다", "보고서를 받은 상사가 화가 났어요. 도망치세요!",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(-1)),
+        };
+        missionList = tempList;
+        return missionList.Length;
+    }
+}
+
+public class SeniorMissionSelector : MissionSelector {
+
+    protected override int CreateMissionListAndReturnNo() {
+        Mission[] tempList = {
+            new Mission("휴식", "휴식을 취하도록 해요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(1)),
+            new Mission("연금", "안정적인 노후 생활을 준비해요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(1)),
+            new Mission("우울증", "혼자 있다보니 마음이 아파요.",
+                new ItemNumberChecker(15, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(-1)),
+            new Mission("장례식", "마지막이에요.",
+                new ItemNumberChecker(0, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new EndEffector(0)),
+        };
+        missionList = tempList;
+        return missionList.Length;
+    }
+}
+
+public class CSATMissionSelector : MissionSelector {
+
+    protected override int CreateMissionListAndReturnNo() {
+        Mission[] tempList = {
+            new Mission("수능", "대학 합격을 위해 달려요. 실패 시 백수!",
+                new ItemNumberChecker(8, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
+            .AddEffectorAndReturnMission(new LifeEffector(1)),
+        };
+        missionList = tempList;
+        return missionList.Length;
+    }
+}
+
+public class Mission {
 
     //variable
     string name;
@@ -156,34 +238,69 @@ public abstract class Mission {
             return detail;
         }
     }
+    ConditionChecker conditionChecker;
+    EffectorManager effectorManager = new EffectorManager(5);
 
-    public Mission(string name, string detail) {
+    public Mission(string name, string detail, ConditionChecker conditionChecker) {
         this.name = name;
         this.detail = detail;
+        this.conditionChecker = conditionChecker;
     }
 
-    public abstract void GiveRewardByCondition();
-}
+    public Mission AddEffectorAndReturnMission(Effector effector) {
+        effectorManager.AddEffector(effector, this);
+        return this;
+    }
 
-public class ConstantMission : Mission {
+    public void RemoveEffector(System.Type type, int value) {
+        effectorManager.RemoveEffector(type, value);
+    }
 
-    //const
-    const int sucCondition = 15;
-
-    //variable
-    int rewardLife;
-    public int SetRewardLife {
-        set {
-            rewardLife = value;
+    public void GiveRewardIfSuccess() {
+        if (conditionChecker.IsConditionSatisfied()) {
+            effectorManager.RunAllEffector();
         }
     }
+}
 
-    public ConstantMission(string name, string detail)
-        : base(name, detail) {
+public abstract class ConditionChecker {
 
+    public abstract bool IsConditionSatisfied();
+}
+
+public class ItemNumberChecker : ConditionChecker {
+
+    //enum
+    public enum MeaningOfNumber {
+        DO_NOT_CHECK = -1
     }
 
-    public override void GiveRewardByCondition() {
-        
+    //variable
+    int minNo = -1;
+    int maxNo = -1;
+
+    public ItemNumberChecker(int minNo, int maxNo) {
+        InitMinMaxNo(minNo, maxNo);
+    }
+
+    public ItemNumberChecker(MeaningOfNumber minNo, int maxNo) {
+        InitMinMaxNo((int)minNo, maxNo);
+    }
+
+    public ItemNumberChecker(int minNo, MeaningOfNumber maxNo) {
+        InitMinMaxNo(minNo, (int)maxNo);
+    }
+
+    void InitMinMaxNo(int minNo, int maxNo) {
+        this.minNo = minNo;
+        this.maxNo = maxNo;
+    }
+
+    public override bool IsConditionSatisfied() {
+        if ((minNo != -1 && false) || (maxNo != -1 && false)) {
+            return false;
+        }
+
+        return true;
     }
 }

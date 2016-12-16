@@ -18,10 +18,10 @@ public abstract class ItemSelector {
     static StringBuilder strBuilder = new StringBuilder();
 
     public ItemSelector() {
-        itemNo = CreateItemList();
+        itemNo = CreateItemListAndReturnNo();
     }
 
-    protected abstract int CreateItemList();
+    protected abstract int CreateItemListAndReturnNo();
 
     public GameObject SelectItem(int itemNo) {
         GameObject item = objectPoolList[itemNo].Retain();
@@ -50,7 +50,7 @@ public abstract class ItemSelector {
 
 public class SpineItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Enemy/Spine";
 
         Item[] itemList = {
@@ -64,7 +64,7 @@ public class SpineItemSelector : ItemSelector {
 
 public class StarItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Normal/Star";
 
         Item[] itemList = {
@@ -82,7 +82,7 @@ public class StarItemSelector : ItemSelector {
 
 public class ChildItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Special/Child";
 
         Item[] itemList = {
@@ -106,7 +106,7 @@ public class ChildItemSelector : ItemSelector {
 
 public class StudentItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Special/Student";
 
         Item[] itemList = {
@@ -130,7 +130,7 @@ public class StudentItemSelector : ItemSelector {
 
 public class UniversityItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Special/University";
 
         Item[] itemList = {
@@ -154,7 +154,7 @@ public class UniversityItemSelector : ItemSelector {
 
 public class UnemployedItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Special/Unemployed";
 
         Item[] itemList = {
@@ -178,7 +178,7 @@ public class UnemployedItemSelector : ItemSelector {
 
 public class WorkerItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Special/Worker";
 
         Item[] itemList = {
@@ -202,7 +202,7 @@ public class WorkerItemSelector : ItemSelector {
 
 public class ChickenItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Special/Chicken";
 
         Item[] itemList = {
@@ -226,7 +226,7 @@ public class ChickenItemSelector : ItemSelector {
 
 public class SeniorItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Special/Senior";
 
         Item[] itemList = {
@@ -251,7 +251,7 @@ public class SeniorItemSelector : ItemSelector {
 
 public class CSATItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Branch/CSAT";
 
         Item[] itemList = {
@@ -267,7 +267,7 @@ public class CSATItemSelector : ItemSelector {
 
 public class JobHuntItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Branch/JobHunt";
 
         Item[] itemList = {
@@ -283,7 +283,7 @@ public class JobHuntItemSelector : ItemSelector {
 
 public class DarwinismItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Branch/Darwinism";
 
         Item[] itemList = {
@@ -299,7 +299,7 @@ public class DarwinismItemSelector : ItemSelector {
 
 public class MarriageItemSelector : ItemSelector {
 
-    protected override int CreateItemList() {
+    protected override int CreateItemListAndReturnNo() {
         string path = "Branch/Marriage";
 
         Item[] itemList = {

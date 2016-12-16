@@ -11,13 +11,13 @@ public class EffectorManager {
         effectList = new List<Effector>(effectInitNo);
     }
 
-    public void RunAllEffect() {
+    public void RunAllEffector() {
         for (int i = 0; i < effectList.Count; ++i) {
             effectList[i].OperateEffect();
         }
     }
 
-    public void AddEffector(Effector effector, Object parent) {
+    public void AddEffector(Effector effector, System.Object parent) {
         effector.Parent = parent;
         effectList.Add(effector);
     }
@@ -36,8 +36,8 @@ public abstract class Effector {
 
     //variable
     protected int value;
-    protected Object parent;
-    public Object Parent {
+    protected System.Object parent;
+    public System.Object Parent {
         set {
             parent = value;
         }
@@ -108,5 +108,41 @@ public class GainEffector : Effector {
 
     public override void OperateEffect() {
 
+    }
+}
+
+public class LifeEffector : Effector {
+
+    public LifeEffector(int value)
+        : base(value) {
+
+    }
+
+    public override void OperateEffect() {
+        
+    }
+}
+
+public class EndEffector : Effector {
+
+    public EndEffector(int value)
+        : base(value) {
+
+    }
+
+    public override void OperateEffect() {
+        
+    }
+}
+
+public class SetStageEffector : Effector {
+
+    public SetStageEffector(int value)
+        : base(value) {
+
+    }
+
+    public override void OperateEffect() {
+        
     }
 }

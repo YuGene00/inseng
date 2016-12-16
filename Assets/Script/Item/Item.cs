@@ -60,7 +60,7 @@ public abstract class Item : MonoBehaviour {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        effectorManager.RunAllEffect();
+        effectorManager.RunAllEffector();
     }
 
     public void SetOwnObjectPool(ObjectPool objPool) {
