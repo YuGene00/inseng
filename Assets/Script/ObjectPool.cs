@@ -16,7 +16,7 @@ public class ObjectPool {
     GameObject origin;
     int unitNo;
 
-    static public ObjectPool MakePoolOfObjWithNumber(GameObject obj, int unitNo = 20) {
+    static public ObjectPool CreatePoolOfObjWithNumber(GameObject obj, int unitNo = 20) {
         ObjectPool objectPool = new ObjectPool();
         objectPool.SetObject(obj);
         objectPool.SetUnitNumber(unitNo);
@@ -45,12 +45,12 @@ public class ObjectPool {
 
     void AllocateMemory(int allocateNo) {
         for (int i = 0; i < allocateNo; ++i) {
-            GameObject newObj = MakeNewObjectIntoStack();
+            GameObject newObj = CreateNewObjectIntoStack();
             newObj.SetActive(false);
         }
     }
 
-    GameObject MakeNewObjectIntoStack() {
+    GameObject CreateNewObjectIntoStack() {
         GameObject newObj = MonoBehaviour.Instantiate(origin);
         newObj.transform.SetParent(root.trans);
         poolStack.Push(newObj);

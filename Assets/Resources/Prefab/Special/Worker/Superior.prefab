@@ -21,7 +21,6 @@ GameObject:
   - 4: {fileID: 4000010139892062}
   - 212: {fileID: 212000012191719442}
   - 61: {fileID: 61000014200425022}
-  - 114: {fileID: 114000011412149002}
   m_Layer: 0
   m_Name: Superior
   m_TagString: Untagged
@@ -53,20 +52,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.03, y: 0.04}
   serializedVersion: 2
-  m_Size: {x: 0.7, y: 1.3}
---- !u!114 &114000011412149002
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012540720456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1a30a6520ab6b14f9d45dcd88518260, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Size: {x: 0.72, y: 1.35}
 --- !u!212 &212000012191719442
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -95,7 +83,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: fbe9f55a5a9740641a422b738afaaab1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

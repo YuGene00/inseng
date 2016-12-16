@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class Item : MonoBehaviour {
 
@@ -9,8 +10,17 @@ public abstract class Item : MonoBehaviour {
     //variable
     Move move;
     Vector2 unitDistance = Vector2.zero;
-    protected ObjectPool ownObjectPool;
-    int score;
+    ObjectPool ownObjectPool;
+    string itemName;
+    public string ItemName {
+        get {
+            return itemName;
+        }
+        set {
+            itemName = value;
+        }
+    }
+    EffectorManager effectorManager = new EffectorManager(5);
 
     void Awake() {
         Caching();
@@ -30,10 +40,6 @@ public abstract class Item : MonoBehaviour {
         StartCoroutine("DropItem");
     }
 
-    public void SetOwnObjectPool(ObjectPool objPool) {
-        ownObjectPool = objPool;
-    }
-
     IEnumerator DropItem() {
         while(true) {
             unitDistance.y = GameController.GetInstance().gameSpeed * Time.deltaTime;
@@ -45,21 +51,28 @@ public abstract class Item : MonoBehaviour {
 
     void DestroyIfOutOfArea() {
         if(!move.IsInArea(trans.position)) {
-            ownObjectPool.Release(this.gameObject);
+            DestroyItem();
         }
     }
 
-    protected virtual void OnTriggerEnter2D(Collider2D other) {
-        EatenByPlayer();
+    public void DestroyItem() {
+        ownObjectPool.Release(this.gameObject);
     }
 
-    protected abstract void EatenByPlayer();
-
-    protected void SetScore(int score) {
-        GameController.GetInstance().score += score;
+    void OnTriggerEnter2D(Collider2D other) {
+        effectorManager.RunAllEffect();
     }
 
-    protected void SetItemNumber(int number) {
-        GameController.GetInstance().EatItemNumber += number;
+    public void SetOwnObjectPool(ObjectPool objPool) {
+        ownObjectPool = objPool;
+    }
+
+    public Item AddEffectorAndReturnItem(Effector effector) {
+        effectorManager.AddEffector(effector, this);
+        return this;
+    }
+
+    public void RemoveEffector(System.Type type, int value) {
+        effectorManager.RemoveEffector(type, value);
     }
 }

@@ -21,7 +21,9 @@ public class ItemManager : MonoBehaviour {
     ItemSelector[] normalSelector;
     ItemSelector[] specialSelector;
     ItemSelector[] branchSelector;
-    delegate WaitForSeconds createItemAndReturnWait();
+    delegate WaitForSeconds ReturnWaitFunc();
+    ReturnWaitFunc createEnemyDelegate;
+    ReturnWaitFunc createItemDelegate;
     WaitForSeconds waitForEnemy;
     WaitForSeconds waitForNormal;
     WaitForSeconds waitForSpecial;
@@ -29,6 +31,7 @@ public class ItemManager : MonoBehaviour {
 
     void Start() {
         Initialize();
+        RunCoroutine();
     }
 
     void Initialize() {
@@ -37,35 +40,37 @@ public class ItemManager : MonoBehaviour {
         SetSpecialSelectors();
         SetBranchSelectors();
         SetWaitForSeconds();
+        BindFuncToEvent();
+        InitDelegate();
     }
 
     void SetEnemySelectors() {
-        enemySelector = new ItemSelector[1];
-        enemySelector[0] = new SpineSelector();
+        enemySelector = new ItemSelector[(int)EventManager.EventTypeForEnemy.END];
+        enemySelector[(int)EventManager.EventTypeForEnemy.SPINE] = new SpineItemSelector();
     }
 
     void SetNormalSelectors() {
-        normalSelector = new ItemSelector[1];
-        normalSelector[0] = new StarSelector();
+        normalSelector = new ItemSelector[(int)EventManager.EventTypeForNormal.END];
+        normalSelector[(int)EventManager.EventTypeForNormal.STAR] = new StarItemSelector();
     }
 
     void SetSpecialSelectors() {
-        specialSelector = new ItemSelector[(int)EventManager.SpecialType.END];
-        specialSelector[(int)EventManager.SpecialType.CHILD] = new ChildSelector();
-        specialSelector[(int)EventManager.SpecialType.STUDENT] = new StudentSelector();
-        specialSelector[(int)EventManager.SpecialType.UNIVERSITY] = new UniversitySelector();
-        specialSelector[(int)EventManager.SpecialType.UNEMPLOYED] = new UnemployedSelector();
-        specialSelector[(int)EventManager.SpecialType.WORKER] = new WorkerSelector();
-        specialSelector[(int)EventManager.SpecialType.CHICKEN] = new ChickenSelector();
-        specialSelector[(int)EventManager.SpecialType.SENIOR] = new SeniorSelector();
+        specialSelector = new ItemSelector[(int)EventManager.EventTypeForSpecial.END];
+        specialSelector[(int)EventManager.EventTypeForSpecial.CHILD] = new ChildItemSelector();
+        specialSelector[(int)EventManager.EventTypeForSpecial.STUDENT] = new StudentItemSelector();
+        specialSelector[(int)EventManager.EventTypeForSpecial.UNIVERSITY] = new UniversityItemSelector();
+        specialSelector[(int)EventManager.EventTypeForSpecial.UNEMPLOYED] = new UnemployedItemSelector();
+        specialSelector[(int)EventManager.EventTypeForSpecial.WORKER] = new WorkerItemSelector();
+        specialSelector[(int)EventManager.EventTypeForSpecial.CHICKEN] = new ChickenItemSelector();
+        specialSelector[(int)EventManager.EventTypeForSpecial.SENIOR] = new SeniorItemSelector();
     }
 
     void SetBranchSelectors() {
-        branchSelector = new ItemSelector[(int)EventManager.BranchType.END];
-        branchSelector[(int)EventManager.BranchType.CSAT] = new CSATSelector();
-        branchSelector[(int)EventManager.BranchType.JOBHUNT] = new JobHuntSelector();
-        branchSelector[(int)EventManager.BranchType.DARWINISM] = new DarwinismSelector();
-        branchSelector[(int)EventManager.BranchType.MARRIAGE] = new MarriageSelector();
+        branchSelector = new ItemSelector[(int)EventManager.EventTypeForBranch.END];
+        branchSelector[(int)EventManager.EventTypeForBranch.CSAT] = new CSATItemSelector();
+        branchSelector[(int)EventManager.EventTypeForBranch.JOBHUNT] = new JobHuntItemSelector();
+        branchSelector[(int)EventManager.EventTypeForBranch.DARWINISM] = new DarwinismItemSelector();
+        branchSelector[(int)EventManager.EventTypeForBranch.MARRIAGE] = new MarriageItemSelector();
     }
 
     void SetWaitForSeconds() {
@@ -75,92 +80,57 @@ public class ItemManager : MonoBehaviour {
         waitForBranch = new WaitForSeconds(branchItemPeriod);
     }
 
-    void EnemyStart() {
-        enemySelector = spineSelector;
+    void BindFuncToEvent() {
+        EventManager.instacne.AddFuncToEventForStart(SetDelegateToEnemy, EventManager.EventType.ENEMY);
+        EventManager.instacne.AddFuncToEventForStart(SetDelegateToNormal, EventManager.EventType.NORMAL);
+        EventManager.instacne.AddFuncToEventForStart(SetDelegateToSpecial, EventManager.EventType.SPECIAL);
+        EventManager.instacne.AddFuncToEventForStart(SetDelegateToBranch, EventManager.EventType.BRANCH);
+    }
+
+    void SetDelegateToEnemy() {
+        createEnemyDelegate = CreateEnemyAndReturnWait;
+    }
+
+    void SetDelegateToNormal() {
+        createItemDelegate = CreateNormalAndReturnWait;
+    }
+
+    void SetDelegateToSpecial() {
+        createItemDelegate = CreateSpecialAndReturnWait;
+    }
+
+    void SetDelegateToBranch() {
+        createItemDelegate = CreateBranchAndReturnWait;
+    }
+
+    void InitDelegate() {
+        CreateEnemyAndReturnWait();
+        CreateNormalAndReturnWait();
+    }
+
+    void RunCoroutine() {
         StartCoroutine("CreateEnemyItem");
+        StartCoroutine("CreateItem");
     }
-
-    void NormalStart() {
-        normalSelector = starSelector;
-        StopCoroutine("CreateSpecialItem");
-        StopCoroutine("CreateFlower");
-        StopCoroutine("CreateSectionItem");
-        StartCoroutine("CreateNormalItem");
-    }
-
-    void SpecialStart() {
-        specialItem = Random.Range(0, 3);
-        ChangeSpecialSelector();
-        StopCoroutine("CreateNormalItem");
-        StopCoroutine("CreateFlower");
-        StopCoroutine("CreateSectionItem");
-        if (GameController.GetInstance().nowStage == GameController.JOBSTAGE.SENIOR_STAGE) {
-            if(oldCount <= 0) {
-                StartCoroutine("CreateSpecialItem");
-                ++oldCount;
-            } else {
-                oldCount = 0;
-                StopCoroutine("CreateSpecialItem");
-                StartCoroutine("CreateFlower");
-            }
-        } else {
-            StartCoroutine("CreateSpecialItem");
-        }
-    }
-
-    void SectionStart() {
-        StopCoroutine("CreateSpecialItem");
-        StopCoroutine("CreateFlower");
-        StopCoroutine("CreateNormalItem");
-        StartCoroutine("CreateSectionItem");
-        if(sectionNumber <= 4) {
-            sectionNumber = 0;
-        } else {
-            ++sectionNumber;
-        }
-    }
-
-    void ChangeSpecialSelector() {
-        switch (GameController.GetInstance().nowStage) {
-            case GameController.JOBSTAGE.CHILD_STAGE:
-                specialSelector = childSelector;
-                break;
-            case GameController.JOBSTAGE.STUDENT_STAGE:
-                specialSelector = studentSelector;
-                break;
-            case GameController.JOBSTAGE.UNIVERSITY_STAGE:
-                specialSelector = universitySelector;
-                break;
-            case GameController.JOBSTAGE.UNEMPLOYED_STAGE_0:
-            case GameController.JOBSTAGE.UNEMPLOYED_STAGE_1:
-                specialSelector = unemploySelector;
-                break;
-            case GameController.JOBSTAGE.WORKER_STAGE_0:
-            case GameController.JOBSTAGE.WORKER_STAGE_1:
-                specialSelector = workerSelector;
-                break;
-            case GameController.JOBSTAGE.CHICKEN_STAGE:
-                specialSelector = chickenSelector;
-                break;
-            case GameController.JOBSTAGE.SENIOR_STAGE:
-                specialSelector = seniorSelector;
-                break;
-        }
-    } 
 
     IEnumerator CreateEnemyItem() {
-        while(true) {
-            CreateItemWithSelector(enemySelector, 0);
-            yield return new WaitForSeconds(enemyPeriod);
+        while (true) {
+            yield return createEnemyDelegate();
         }
     }
 
-    WaitForSeconds CreateEnemyItemAndReturnWait() {
-        CreateItemWithSelector(0, enemySelector[(int)EventManager.instacne.GetCurrentEnemy]);
+    IEnumerator CreateItem() {
+        while (true) {
+            yield return createItemDelegate;
+        }
+    }
+
+    WaitForSeconds CreateEnemyAndReturnWait() {
+        CreateItemWithSelector(0, enemySelector[(int)EventManager.instacne.GetCurrentEventForEnemy]);
         return waitForEnemy;
     }
 
-    WaitForSeconds CreateNormalItemAndReturnWait() {
+    WaitForSeconds CreateNormalAndReturnWait() {
         float dice = Random.Range(0f, 1f);
         if (dice > 0.3f) {
             CreateItemWithSelector((int)StarType.YELLOW, normalSelector[(int)EventManager.instacne.GetCurrentEvent.detail]);
@@ -170,41 +140,14 @@ public class ItemManager : MonoBehaviour {
         return waitForNormal;
     }
 
-    IEnumerator CreateNormalItem() {
-        while(true) {
-            float dice = Random.Range(0f, 1f);
-            if(dice > 0.3f) {
-                CreateItemWithSelector(normalSelector, 0);
-            } else {
-                CreateItemWithSelector(normalSelector, 1);
-            }
-            yield return new WaitForSeconds(normalPeriod);
-        }
+    WaitForSeconds CreateSpecialAndReturnWait() {
+        CreateItemWithSelector(EventManager.instacne.Mission.CurrentMission, specialSelector[(int)EventManager.instacne.GetCurrentEvent.detail]);
+        return waitForSpecial;
     }
 
-    IEnumerator CreateSpecialItem() {
-        while (true) {
-            CreateItemWithSelector(specialSelector, specialItem);
-            yield return new WaitForSeconds(specialPeriod);
-        }
-    }
-
-    IEnumerator CreateSectionItem() {
-        while(true) {
-            CreateItemWithSelector(sectionSelector, sectionNumber);
-            yield return new WaitForSeconds(sectionPeriod);
-        }
-    }
-
-    IEnumerator CreateFlower() {
-        while(true) {
-            CreateItemWithSelector(specialSelector, 3);
-            yield return new WaitForSeconds(specialPeriod);
-        }
-    }
-
-    void CreateSpecialItem() {
-        CreateItemWithSelector(specialSelector[specialEventType], specialItem);
+    WaitForSeconds CreateBranchAndReturnWait() {
+        CreateItemWithSelector(EventManager.instacne.Mission.CurrentMission, branchSelector[(int)EventManager.instacne.GetCurrentEvent.detail]);
+        return waitForBranch;
     }
 
     void CreateItemWithSelector(int itemNo, ItemSelector itemSelector) {

@@ -9,19 +9,18 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1000013472987558}
+  m_RootGameObject: {fileID: 1000014130428352}
   m_IsPrefabParent: 1
---- !u!1 &1000013472987558
+--- !u!1 &1000014130428352
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 4000010649073534}
-  - 212: {fileID: 212000012800134624}
-  - 61: {fileID: 61000013769030936}
-  - 114: {fileID: 114000010190187660}
+  - 4: {fileID: 4000010737063648}
+  - 212: {fileID: 212000013601707244}
+  - 61: {fileID: 61000010892397480}
   m_Layer: 0
   m_Name: Toiletries
   m_TagString: Untagged
@@ -29,12 +28,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4000010649073534
+--- !u!4 &4000010737063648
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013472987558}
+  m_GameObject: {fileID: 1000014130428352}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 1}
@@ -42,37 +41,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!61 &61000013769030936
+--- !u!61 &61000010892397480
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013472987558}
+  m_GameObject: {fileID: 1000014130428352}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.02, y: 0.01}
   serializedVersion: 2
-  m_Size: {x: 0.7, y: 0.9}
---- !u!114 &114000010190187660
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013472987558}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7743a8e0c96e27742b41fd776f02b0b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!212 &212000012800134624
+  m_Size: {x: 0.67, y: 0.85}
+--- !u!212 &212000013601707244
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013472987558}
+  m_GameObject: {fileID: 1000014130428352}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -95,7 +83,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 7d0a341308b8f75469d8a5ea07c9dc0b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

@@ -4,16 +4,24 @@ using System.Text;
 
 public abstract class ItemSelector {
 
+    //const
+    protected const int normalScore = 10;
+
     //variable
-    protected ObjectPool[] objectPoolList;
-    protected int itemNo;
+    ObjectPool[] objectPoolList;
+    int itemNo;
+    public int ItemNo {
+        get {
+            return itemNo;
+        }
+    }
     static StringBuilder strBuilder = new StringBuilder();
 
     public ItemSelector() {
-        itemNo = GenerateItemList();
+        itemNo = CreateItemList();
     }
 
-    protected abstract int GenerateItemList();
+    protected abstract int CreateItemList();
 
     public GameObject SelectItem(int itemNo) {
         GameObject item = objectPoolList[itemNo].Retain();
@@ -21,135 +29,286 @@ public abstract class ItemSelector {
         return item;
     }
 
-    public int ItemNo() {
-        return itemNo;
+    protected Item CreateItemWithPathAndName(string path, string name) {
+        strBuilder.Length = 0;
+        strBuilder.Append("Prefab/").Append(path).Append("/").Append(name);
+        GameObject obj = Resources.Load(strBuilder.ToString()) as GameObject;
+        Item item = obj.AddComponent<Item>();
+        item.ItemName = name;
+        return item;
     }
 
-    protected int GenerateObjPoolsWithPathAndNames(string path, string[] names) {
-        int itemNo = names.Length;
+    protected int CreateObjPoolsWithItems(Item[] itemList) {
+        int itemNo = itemList.Length;
         objectPoolList = new ObjectPool[itemNo];
-        strBuilder.Length = 0;
         for (int i = 0; i < itemNo; ++i) {
-            strBuilder.Append("Prefab/").Append(path).Append("/").Append(names[i]);
-            objectPoolList[i] = ObjectPool.MakePoolOfObjWithNumber(Resources.Load(strBuilder.ToString()) as GameObject);
+            objectPoolList[i] = ObjectPool.CreatePoolOfObjWithNumber(itemList[i].gameObject);
         }
         return itemNo;
     }
 }
 
-public class SpineSelector : ItemSelector {
+public class SpineItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Enemy/Spine";
-        string[] names = { "Spine" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "Spine")
+            .AddEffectorAndReturnItem(new DamageEffector(1)),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }
 
-public class StarSelector : ItemSelector {
+public class StarItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Normal/Star";
-        string[] names = { "YellowStar", "RedStar" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "YellowStar")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore)),
+            CreateItemWithPathAndName(path, "RedStar")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 5)),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }
 
-public class ChildSelector : ItemSelector {
+public class ChildItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Special/Child";
-        string[] names = { "Basket", "Toiletries", "Ball" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "Basket")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 10))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "Toiletries")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 10))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "Ball")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 10))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }
 
-public class StudentSelector : ItemSelector {
+public class StudentItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Special/Student";
-        string[] names = { "Gum", "DrawingPaper", "SelfTeachingBook" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "Gum")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * -8))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "DrawingPaper")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 10))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "SelfTeachingBook")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 10))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }
 
-public class UniversitySelector : ItemSelector {
+public class UniversityItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Special/University";
-        string[] names = { "Runner", "Assignment", "APlus" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "Runner")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 10))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "Assignment")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * -8))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "APlus")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 20))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }
 
-public class UnemployedSelector : ItemSelector {
+public class UnemployedItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Special/Unemployed";
-        string[] names = { "Mask", "Alcohol", "Ramen" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "Mask")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 10))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "Alcohol")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * -8))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "Ramen")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * -8))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }
 
-public class WorkerSelector : ItemSelector {
+public class WorkerItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Special/Worker";
-        string[] names = { "Document", "BusinessCard", "Superior" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "Document")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 20))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "BusinessCard")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 20))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "Superior")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * -20))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }
 
-public class ChickenSelector : ItemSelector {
+public class ChickenItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Special/Chicken";
-        string[] names = { "Chicken", "AngryCustomer", "Stock" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "Chicken")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 10))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "AngryCustomer")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 10))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "Stock")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * -10))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }
 
-public class SeniorSelector : ItemSelector {
+public class SeniorItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Special/Senior";
-        string[] names = { "Leaf", "BankBook", "DisappearMan", "Flower" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "Leaf")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 10))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "BankBook")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 10))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "DisappearMan")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * -8))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+            CreateItemWithPathAndName(path, "Flower"),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }
 
-public class CSATSelector : ItemSelector {
+public class CSATItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Branch/CSAT";
-        string[] names = { "TextBook" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "TextBook")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 30))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }
 
-public class JobHuntSelector : ItemSelector {
+public class JobHuntItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Branch/JobHunt";
-        string[] names = { "Suit" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "Suit")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 30))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }
 
-public class DarwinismSelector : ItemSelector {
+public class DarwinismItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Branch/Darwinism";
-        string[] names = { "Salary" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "Salary")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 30))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }
 
-public class MarriageSelector : ItemSelector {
+public class MarriageItemSelector : ItemSelector {
 
-    protected override int GenerateItemList() {
+    protected override int CreateItemList() {
         string path = "Branch/Marriage";
-        string[] names = { "Bouquet" };
-        return GenerateObjPoolsWithPathAndNames(path, names);
+
+        Item[] itemList = {
+            CreateItemWithPathAndName(path, "Bouquet")
+            .AddEffectorAndReturnItem(new DestroyItemEffector(1))
+            .AddEffectorAndReturnItem(new ScoreEffector(normalScore * 30))
+            .AddEffectorAndReturnItem(new GainEffector(1)),
+        };
+
+        return CreateObjPoolsWithItems(itemList);
     }
 }

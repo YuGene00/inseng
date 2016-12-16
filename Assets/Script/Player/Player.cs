@@ -163,7 +163,6 @@ public class Player : MonoBehaviour
     void Result() {
         Time.timeScale = 0f;
         ballon.PlaySound();
-        itemManager.StopManager();
         EndCanvas.SetActive(true);
         int currentScore = GameController.GetInstance().score;
         if (DataSender.highScore < currentScore) {

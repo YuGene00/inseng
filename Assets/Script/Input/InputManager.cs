@@ -29,7 +29,7 @@ public class InputManager : MonoBehaviour {
     IEnumerator InputMouse() {
         while (true) {
             mouse.UpdateClicking();
-            switch(mouse.GetClickState()) {
+            switch(mouse.GetClickState) {
                 case Mouse.ClickState.DOWN:
                     playerOriginPos = player.GetPosition();
                     break;

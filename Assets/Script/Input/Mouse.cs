@@ -11,6 +11,11 @@ public class Mouse {
     //variable
     Vector2 clickPos;
     ClickState state = ClickState.NONE;
+    public ClickState GetClickState {
+        get {
+            return state;
+        }
+    }
 
     public void UpdateClicking() {
         if (Input.GetMouseButtonDown(0)) {
@@ -23,10 +28,6 @@ public class Mouse {
         } else if(state == ClickState.UP) {
             state = ClickState.NONE;
         }
-    }
-
-    public ClickState GetClickState() {
-        return state;
     }
 
     public Vector2 CalculateMouseDistance() {

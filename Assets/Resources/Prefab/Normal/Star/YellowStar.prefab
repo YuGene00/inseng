@@ -21,7 +21,6 @@ GameObject:
   - 4: {fileID: 4000010022403936}
   - 212: {fileID: 212000013332423828}
   - 61: {fileID: 61000013996514374}
-  - 114: {fileID: 114000012787735516}
   m_Layer: 0
   m_Name: YellowStar
   m_TagString: Untagged
@@ -53,20 +52,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.01, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.6, y: 0.6}
---- !u!114 &114000012787735516
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013913402082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e07d287b32c9e5540b282471f4437e3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Size: {x: 0.61, y: 0.56}
 --- !u!212 &212000013332423828
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -95,7 +83,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b4a6a4e3e19395b4aa897923b17ad3de, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
