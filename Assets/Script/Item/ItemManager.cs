@@ -17,10 +17,10 @@ public class ItemManager : MonoBehaviour {
     public float redStarChance = 0.7f;
 
     //variable
-    ItemSelector[] enemySelector;
-    ItemSelector[] normalSelector;
-    ItemSelector[] specialSelector;
-    ItemSelector[] branchSelector;
+    ItemSelector[] enemySelector = new ItemSelector[(int)EventManager.EventTypeForEnemy.END];
+    ItemSelector[] normalSelector = new ItemSelector[(int)EventManager.EventTypeForNormal.END];
+    ItemSelector[] specialSelector = new ItemSelector[(int)EventManager.EventTypeForSpecial.END];
+    ItemSelector[] branchSelector = new ItemSelector[(int)EventManager.EventTypeForBranch.END];
     delegate WaitForSeconds ReturnWaitFunc();
     ReturnWaitFunc createEnemyDelegate;
     ReturnWaitFunc createItemDelegate;
@@ -29,8 +29,13 @@ public class ItemManager : MonoBehaviour {
     WaitForSeconds waitForSpecial;
     WaitForSeconds waitForBranch;
 
-    void Start() {
+    void Awake() {
         Initialize();
+    }
+
+    void Start() {
+        InitDelegate();
+        BindFuncToEvent();
         RunCoroutine();
     }
 
@@ -40,22 +45,17 @@ public class ItemManager : MonoBehaviour {
         SetSpecialSelectors();
         SetBranchSelectors();
         SetWaitForSeconds();
-        BindFuncToEvent();
-        InitDelegate();
     }
 
     void SetEnemySelectors() {
-        enemySelector = new ItemSelector[(int)EventManager.EventTypeForEnemy.END];
         enemySelector[(int)EventManager.EventTypeForEnemy.SPINE] = new SpineItemSelector();
     }
 
     void SetNormalSelectors() {
-        normalSelector = new ItemSelector[(int)EventManager.EventTypeForNormal.END];
         normalSelector[(int)EventManager.EventTypeForNormal.STAR] = new StarItemSelector();
     }
 
     void SetSpecialSelectors() {
-        specialSelector = new ItemSelector[(int)EventManager.EventTypeForSpecial.END];
         specialSelector[(int)EventManager.EventTypeForSpecial.CHILD] = new ChildItemSelector();
         specialSelector[(int)EventManager.EventTypeForSpecial.STUDENT] = new StudentItemSelector();
         specialSelector[(int)EventManager.EventTypeForSpecial.UNIVERSITY] = new UniversityItemSelector();
@@ -66,7 +66,6 @@ public class ItemManager : MonoBehaviour {
     }
 
     void SetBranchSelectors() {
-        branchSelector = new ItemSelector[(int)EventManager.EventTypeForBranch.END];
         branchSelector[(int)EventManager.EventTypeForBranch.CSAT] = new CSATItemSelector();
         branchSelector[(int)EventManager.EventTypeForBranch.JOBHUNT] = new JobHuntItemSelector();
         branchSelector[(int)EventManager.EventTypeForBranch.DARWINISM] = new DarwinismItemSelector();
@@ -115,13 +114,21 @@ public class ItemManager : MonoBehaviour {
 
     IEnumerator CreateEnemyItem() {
         while (true) {
-            yield return createEnemyDelegate();
+            if(createEnemyDelegate == null) {
+                yield return null;
+            } else {
+                yield return createEnemyDelegate();
+            }
         }
     }
 
     IEnumerator CreateItem() {
         while (true) {
-            yield return createItemDelegate;
+            if (createItemDelegate == null) {
+                yield return null;
+            } else {
+                yield return createItemDelegate();
+            }
         }
     }
 
@@ -133,7 +140,7 @@ public class ItemManager : MonoBehaviour {
     WaitForSeconds CreateNormalAndReturnWait() {
         float dice = Random.Range(0f, 1f);
         if (dice > 0.3f) {
-            CreateItemWithSelector((int)StarType.YELLOW, normalSelector[(int)EventManager.instacne.GetCurrentEvent.detail]);
+            CreateItemWithSelector((int)StarType.YELLOW, normalSelector[EventManager.instacne.GetCurrentEvent.detail]);
         } else {
             CreateItemWithSelector((int)StarType.RED, normalSelector[0]);
         }
@@ -141,16 +148,20 @@ public class ItemManager : MonoBehaviour {
     }
 
     WaitForSeconds CreateSpecialAndReturnWait() {
-        CreateItemWithSelector(EventManager.instacne.Mission.CurrentMission, specialSelector[(int)EventManager.instacne.GetCurrentEvent.detail]);
+        CreateItemWithSelector(MissionManager.instacne.GetCurrentMission.index, specialSelector[EventManager.instacne.GetCurrentEvent.detail]);
         return waitForSpecial;
     }
 
     WaitForSeconds CreateBranchAndReturnWait() {
-        CreateItemWithSelector(EventManager.instacne.Mission.CurrentMission, branchSelector[(int)EventManager.instacne.GetCurrentEvent.detail]);
+        CreateItemWithSelector(MissionManager.instacne.GetCurrentMission.index, branchSelector[EventManager.instacne.GetCurrentEvent.detail]);
         return waitForBranch;
     }
 
     void CreateItemWithSelector(int itemNo, ItemSelector itemSelector) {
+        if(itemNo == (int)MissionManager.MeaningOfNumber.NO_MISSION) {
+            return;
+        }
+
         Vector2 genPoint = SelectGenPoint();
         GameObject item = itemSelector.SelectItem(itemNo);
         item.transform.position = genPoint;

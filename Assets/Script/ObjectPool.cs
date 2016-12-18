@@ -51,7 +51,7 @@ public class ObjectPool {
     }
 
     GameObject CreateNewObjectIntoStack() {
-        GameObject newObj = MonoBehaviour.Instantiate(origin);
+        GameObject newObj = Object.Instantiate(origin);
         newObj.transform.SetParent(root.trans);
         poolStack.Push(newObj);
         return newObj;

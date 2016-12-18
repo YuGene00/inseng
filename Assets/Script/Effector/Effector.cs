@@ -1,43 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-
-public class EffectorManager {
-
-    //variable
-    List<Effector> effectList;
-
-    public EffectorManager(int effectInitNo = 5) {
-        effectList = new List<Effector>(effectInitNo);
-    }
-
-    public void RunAllEffector() {
-        for (int i = 0; i < effectList.Count; ++i) {
-            effectList[i].OperateEffect();
-        }
-    }
-
-    public void AddEffector(Effector effector, System.Object parent) {
-        effector.Parent = parent;
-        effectList.Add(effector);
-    }
-
-    public void RemoveEffector(System.Type type, int value) {
-        for (int i = 0; i < effectList.Count; ++i) {
-            if (effectList[i].IsSameEffectorWithTypeAndValue(type, value)) {
-                effectList.RemoveAt(i);
-                break;
-            }
-        }
-    }
-}
-
-public abstract class Effector {
+﻿public abstract class Effector {
 
     //variable
     protected int value;
-    protected System.Object parent;
-    public System.Object Parent {
+    protected object parent;
+    public object Parent {
         set {
             parent = value;
         }
@@ -83,7 +49,7 @@ public class DamageEffector : Effector {
     }
 
     public override void OperateEffect() {
-
+        Player.instance.Damaged(value);
     }
 }
 
@@ -95,7 +61,7 @@ public class ScoreEffector : Effector {
     }
 
     public override void OperateEffect() {
-
+        ScoreManager.instance.AddScore(value);
     }
 }
 
@@ -107,7 +73,7 @@ public class GainEffector : Effector {
     }
 
     public override void OperateEffect() {
-
+        MissionManager.instacne.AddMissionItemNo(value);
     }
 }
 
@@ -119,7 +85,11 @@ public class LifeEffector : Effector {
     }
 
     public override void OperateEffect() {
-        
+        if(value < 0) {
+            Player.instance.Damaged(value);
+        } else {
+            Player.instance.AddLife(value);
+        }
     }
 }
 
@@ -143,6 +113,6 @@ public class SetStageEffector : Effector {
     }
 
     public override void OperateEffect() {
-        
+        StageManager.instacne.CurrentStage = (StageManager.StageType)value;
     }
 }

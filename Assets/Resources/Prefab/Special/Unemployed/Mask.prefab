@@ -21,6 +21,7 @@ GameObject:
   - 4: {fileID: 4000010951905964}
   - 212: {fileID: 212000014141284438}
   - 61: {fileID: 61000013511521828}
+  - 114: {fileID: 114000010382799360}
   m_Layer: 0
   m_Name: Mask
   m_TagString: Untagged
@@ -55,6 +56,17 @@ BoxCollider2D:
   m_Offset: {x: -0.01, y: 0.09}
   serializedVersion: 2
   m_Size: {x: 1.26, y: 1.05}
+--- !u!114 &114000010382799360
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012220422246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4379e8daba754a043a547db2400e756d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212000014141284438
 SpriteRenderer:
   m_ObjectHideFlags: 1

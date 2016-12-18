@@ -21,6 +21,7 @@ GameObject:
   - 4: {fileID: 4000012180830244}
   - 212: {fileID: 212000013487567720}
   - 61: {fileID: 61000010638411110}
+  - 114: {fileID: 114000013997415536}
   m_Layer: 0
   m_Name: Runner
   m_TagString: Untagged
@@ -55,6 +56,17 @@ BoxCollider2D:
   m_Offset: {x: -0.07, y: 0.02}
   serializedVersion: 2
   m_Size: {x: 0.85, y: 1.05}
+--- !u!114 &114000013997415536
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011960683710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4379e8daba754a043a547db2400e756d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212000013487567720
 SpriteRenderer:
   m_ObjectHideFlags: 1

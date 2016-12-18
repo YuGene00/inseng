@@ -1,17 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
-public abstract class Item : MonoBehaviour {
+public class Item : MonoBehaviour {
 
     //caching
     Transform trans;
+    ObjectPool ownObjectPool = null;
+    public ObjectPool OwnObjectPool {
+        get {
+            return ownObjectPool;
+        }
+        set {
+            ownObjectPool = value;
+        }
+    }
 
     //variable
     Move move;
     Vector2 unitDistance = Vector2.zero;
-    ObjectPool ownObjectPool;
-    string itemName;
+    string itemName = null;
     public string ItemName {
         get {
             return itemName;
@@ -42,7 +49,7 @@ public abstract class Item : MonoBehaviour {
 
     IEnumerator DropItem() {
         while(true) {
-            unitDistance.y = GameController.GetInstance().gameSpeed * Time.deltaTime;
+            unitDistance.y = BackMover.Speed * Time.deltaTime;
             move.MoveTransToDest(trans, (Vector2)trans.position - unitDistance);
             DestroyIfOutOfArea();
             yield return null;
@@ -56,15 +63,11 @@ public abstract class Item : MonoBehaviour {
     }
 
     public void DestroyItem() {
-        ownObjectPool.Release(this.gameObject);
+        ownObjectPool.Release(gameObject);
     }
 
     void OnTriggerEnter2D(Collider2D other) {
         effectorManager.RunAllEffector();
-    }
-
-    public void SetOwnObjectPool(ObjectPool objPool) {
-        ownObjectPool = objPool;
     }
 
     public Item AddEffectorAndReturnItem(Effector effector) {

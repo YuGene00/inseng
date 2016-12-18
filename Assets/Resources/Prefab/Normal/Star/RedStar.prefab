@@ -21,6 +21,7 @@ GameObject:
   - 4: {fileID: 4000013464880900}
   - 212: {fileID: 212000010230080554}
   - 61: {fileID: 61000010735975816}
+  - 114: {fileID: 114000010110298740}
   m_Layer: 0
   m_Name: RedStar
   m_TagString: Untagged
@@ -55,6 +56,17 @@ BoxCollider2D:
   m_Offset: {x: 0.01, y: 0}
   serializedVersion: 2
   m_Size: {x: 0.61, y: 0.56}
+--- !u!114 &114000010110298740
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014241618830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4379e8daba754a043a547db2400e756d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212000010230080554
 SpriteRenderer:
   m_ObjectHideFlags: 1

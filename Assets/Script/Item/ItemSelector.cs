@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Text;
 
 public abstract class ItemSelector {
@@ -10,7 +9,7 @@ public abstract class ItemSelector {
     //variable
     ObjectPool[] objectPoolList;
     int itemNo;
-    public int ItemNo {
+    public int GetItemNo {
         get {
             return itemNo;
         }
@@ -24,16 +23,19 @@ public abstract class ItemSelector {
     protected abstract int CreateItemListAndReturnNo();
 
     public GameObject SelectItem(int itemNo) {
-        GameObject item = objectPoolList[itemNo].Retain();
-        item.GetComponent<Item>().SetOwnObjectPool(objectPoolList[itemNo]);
-        return item;
+        GameObject itemObj = objectPoolList[itemNo].Retain();
+        Item item = itemObj.GetComponent<Item>();
+        if(item.OwnObjectPool == null) {
+            item.OwnObjectPool = objectPoolList[itemNo];
+        }
+        return itemObj;
     }
 
     protected Item CreateItemWithPathAndName(string path, string name) {
         strBuilder.Length = 0;
         strBuilder.Append("Prefab/").Append(path).Append("/").Append(name);
-        GameObject obj = Resources.Load(strBuilder.ToString()) as GameObject;
-        Item item = obj.AddComponent<Item>();
+        GameObject obj = Resources.Load<GameObject>(strBuilder.ToString());
+        Item item = obj.GetComponent<Item>();
         item.ItemName = name;
         return item;
     }

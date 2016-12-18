@@ -8,7 +8,7 @@ public class EventManager : MonoBehaviour {
 
     //enum
     public enum EventType {
-        ENEMY, NORMAL, SPECIAL, BRANCH
+        ENEMY, NORMAL, SPECIAL, BRANCH, END
     }
     
     public enum EventTypeForEnemy {
@@ -45,66 +45,56 @@ public class EventManager : MonoBehaviour {
             return currentEvent;
         }
     }
-    MissionManager mission = new MissionManager();
-    public MissionManager Mission {
-        get {
-            return mission;
-        }
-    }
     public delegate void CallForEvent();
-    event CallForEvent StartEventForEnemy;
-    event CallForEvent EndEventForEnemy;
-    event CallForEvent StartEventForNormal;
-    event CallForEvent EndEventForNormal;
-    event CallForEvent StartEventForSpecial;
-    event CallForEvent EndEventForSpecial;
-    event CallForEvent StartEventForBranch;
-    event CallForEvent EndEventForBranch;
+    event CallForEvent StartEventForEnemy = delegate { };
+    event CallForEvent EndEventForEnemy = delegate { };
+    event CallForEvent StartEventForNormal = delegate { };
+    event CallForEvent EndEventForNormal = delegate { };
+    event CallForEvent StartEventForSpecial = delegate { };
+    event CallForEvent EndEventForSpecial = delegate { };
+    event CallForEvent StartEventForBranch = delegate { };
+    event CallForEvent EndEventForBranch = delegate { };
 
     void Awake() {
         instacne = this;
     }
 
-    IEnumerator Start() {
-        yield return null;
-    }
-
-    void EventForEnemyStart(EventTypeForEnemy type = EventTypeForEnemy.SPINE) {
+    public void EventForEnemyStart(EventTypeForEnemy type = EventTypeForEnemy.SPINE) {
         currentEventForEnemy = type;
         StartEventForEnemy();
     }
 
-    void EventForEnemyEnd() {
+    public void EventForEnemyEnd() {
         EndEventForEnemy();
     }
 
-    void EventForNormalStart(EventTypeForNormal detail = EventTypeForNormal.STAR) {
+    public void EventForNormalStart(EventTypeForNormal detail = EventTypeForNormal.STAR) {
         currentEvent.type = EventType.NORMAL;
         currentEvent.detail = (int)detail;
         StartEventForNormal();
     }
     
-    void EventForNormalEnd() {
+    public void EventForNormalEnd() {
         EndEventForNormal();
     }
 
-    void EventForSpecialStart(EventTypeForSpecial detail) {
+    public void EventForSpecialStart(EventTypeForSpecial detail) {
         currentEvent.type = EventType.SPECIAL;
         currentEvent.detail = (int)detail;
         StartEventForSpecial();
     }
 
-    void EventForSpecialEnd() {
+    public void EventForSpecialEnd() {
         EndEventForSpecial();
     }
 
-    void EventForBranchStart(EventTypeForBranch detail) {
+    public void EventForBranchStart(EventTypeForBranch detail) {
         currentEvent.type = EventType.BRANCH;
         currentEvent.detail = (int)detail;
         StartEventForBranch();
     }
 
-    void EventForBranchEnd() {
+    public void EventForBranchEnd() {
         EndEventForBranch();
     }
 
