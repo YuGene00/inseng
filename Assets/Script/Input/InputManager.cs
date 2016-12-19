@@ -3,15 +3,34 @@ using System.Collections;
 
 public class InputManager : MonoBehaviour {
 
+    //singleton
+    public static InputManager instance = null;
+
     //inspector
     public Player player;
 
     //variable
     Mouse mouse;
     Vector2 playerOriginPos;
+    bool active = true;
+    public bool Active {
+        get {
+            return active;
+        }
+        set {
+            active = value;
+        }
+    }
+    WaitUntil waitForActive;
 
     void Awake() {
+        instance = this;
+        InitVariable();
+    }
+
+    void InitVariable() {
         mouse = new Mouse();
+        waitForActive = new WaitUntil(() => (active));
     }
 
     void Start() {
@@ -38,7 +57,7 @@ public class InputManager : MonoBehaviour {
                     MoveCharacterWithMouseDistance(distance);
                     break;
             }
-            yield return null;
+            yield return waitForActive;
         }
     }
 

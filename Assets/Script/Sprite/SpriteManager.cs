@@ -20,6 +20,6 @@ public class SpriteManager {
     }
 
     public void SetRendererWithType(SpriteRenderer renderer, SpriteSelector.SpriteType type) {
-        spriteSelector[(int)StageManager.instacne.CurrentStage].SetRendererWithType(renderer, type);
+        spriteSelector[(int)StageManager.instance.CurrentStage].SetRendererWithType(renderer, type);
     }
 }

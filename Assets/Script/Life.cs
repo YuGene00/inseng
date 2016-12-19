@@ -6,6 +6,11 @@ public class Life : MonoBehaviour {
     //inspector
     public float immortalTime = 1f;
 
+    //caching
+    GameObject[] balloonList;
+    Animator[] balloonAnimator;
+    int balloonNo;
+
     //variable
     int lifeNo = 6;
     public int GetLifeNo {
@@ -16,18 +21,19 @@ public class Life : MonoBehaviour {
     int LifeNo {
         set {
             lifeNo = value;
+            ChangeBalloon();
+            if (lifeNo <= 0) {
+                EventManager.instacne.EventForDie();
+            }
         }
     }
     bool immortal = false;
     WaitForSeconds waitForImmortal;
-    GameObject[] balloonList;
-    int balloonNo;
-    AudioSource audioSource;
 
     void ChangeBalloon() {
         int addBalloonNo = lifeNo - balloonNo;
         if (addBalloonNo < 0) {
-            RemoveBalloon(addBalloonNo);
+            RemoveBalloon(-addBalloonNo);
         } else {
             AddBalloon(addBalloonNo);
         }
@@ -35,9 +41,23 @@ public class Life : MonoBehaviour {
 
     void RemoveBalloon(int removeNo) {
         for (int i = balloonNo - 1; i >= balloonNo - removeNo; --i) {
-            balloonList[i].SetActive(false);
+            StartCoroutine(BoomingBalloon(i));
         }
+        balloonNo -= removeNo;
         PlayBoomSound();
+    }
+
+    void PlayBoomSound() {
+        SoundManager.instance.PlayBoom();
+    }
+
+    IEnumerator BoomingBalloon(int index) {
+        Player.instance.SetSpriteWithState(SpriteSelector.SpriteType.SAD);
+        balloonAnimator[index].SetTrigger("Boom");
+        yield return null;
+        yield return new WaitUntil(() => (balloonAnimator[index].GetCurrentAnimatorStateInfo(0).normalizedTime >= balloonAnimator[index].GetCurrentAnimatorStateInfo(0).length));
+        balloonList[index].SetActive(false);
+        Player.instance.SetSpriteWithState(SpriteSelector.SpriteType.NORMAL);
     }
 
     void AddBalloon(int addNo) {
@@ -47,38 +67,36 @@ public class Life : MonoBehaviour {
     }
 
     void Awake() {
-        InitImmortalTime();
-        InitBalloon();
-        InitAudioSource("EffectSound/Explosion");
+        InitWait();
+        Caching();
     }
 
-    void InitImmortalTime() {
+    void InitWait() {
         waitForImmortal = new WaitForSeconds(immortalTime);
     }
 
-    void InitBalloon() {
-        balloonList = GameObject.FindGameObjectsWithTag("Balloon");
-        balloonNo = balloonList.Length;
-    }
-
-    void InitAudioSource(string name) {
-        audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.clip = Resources.Load<AudioClip>(name);
-        audioSource.volume = 1f;
+    void Caching() {
+        Transform balloonRoot = GameObject.FindGameObjectWithTag("Balloon").transform;
+        balloonNo = balloonRoot.childCount;
+        balloonList = new GameObject[balloonNo];
+        balloonAnimator = new Animator[balloonNo];
+        for (int i = 0; i < balloonNo; ++i) {
+            balloonList[i] = balloonRoot.GetChild(i).Find("Object").gameObject;
+            balloonAnimator[i] = balloonList[i].GetComponent<Animator>();
+        }
     }
 
     public void AddLife(int value) {
         const int minLife = 0;
         const int maxLife = 6;
-        LifeNo = Mathf.Max(minLife, lifeNo + value);
-        LifeNo = Mathf.Min(lifeNo, maxLife);
+        LifeNo = Mathf.Min(Mathf.Max(minLife, lifeNo + value), maxLife);
     }
 
     public void Damaged(int value) {
         if (immortal) {
             return;
         }
-        AddLife(value);
+        AddLife(-value);
         StartCoroutine("WaitWhileImmortal");
     }
 
@@ -86,9 +104,5 @@ public class Life : MonoBehaviour {
         immortal = true;
         yield return waitForImmortal;
         immortal = false;
-    }
-
-    void PlayBoomSound() {
-        audioSource.Play();
     }
 }

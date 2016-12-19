@@ -28,6 +28,9 @@ public abstract class ItemSelector {
         if(item.OwnObjectPool == null) {
             item.OwnObjectPool = objectPoolList[itemNo];
         }
+        if (!item.GetIsEffectorSetted) {
+            item.CopyAllEffectorFromItem(item.OwnObjectPool.Origin.GetComponent<Item>());
+        }
         return itemObj;
     }
 
@@ -36,7 +39,7 @@ public abstract class ItemSelector {
         strBuilder.Append("Prefab/").Append(path).Append("/").Append(name);
         GameObject obj = Resources.Load<GameObject>(strBuilder.ToString());
         Item item = obj.GetComponent<Item>();
-        item.ItemName = name;
+        item.ClearEffector();
         return item;
     }
 

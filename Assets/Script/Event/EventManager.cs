@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class EventManager : MonoBehaviour {
@@ -27,10 +29,16 @@ public class EventManager : MonoBehaviour {
         CSAT, JOBHUNT, DARWINISM, MARRIAGE, END
     }
 
+    //struct
     public struct EventInfo {
         public EventType type;
         public int detail;
     }
+
+    //inspector
+    public GameObject EndCanvas;
+    public Text highScoreText;
+    public Text currentScoreText;
 
     //variable
     EventTypeForEnemy currentEventForEnemy;
@@ -54,6 +62,7 @@ public class EventManager : MonoBehaviour {
     event CallForEvent EndEventForSpecial = delegate { };
     event CallForEvent StartEventForBranch = delegate { };
     event CallForEvent EndEventForBranch = delegate { };
+    event CallForEvent DieEvent = delegate { };
 
     void Awake() {
         instacne = this;
@@ -130,5 +139,42 @@ public class EventManager : MonoBehaviour {
                 EndEventForBranch += eventFunc;
                 break;
         }
+    }
+
+    public void EventForDie() {
+        StartCoroutine("RunDieEvent");
+    }
+
+    IEnumerator RunDieEvent() {
+        DieEvent();
+        PrepareDie();
+        yield return new WaitForSeconds(1f);
+        Player.instance.SetSpriteWithState(SpriteSelector.SpriteType.DROP);
+        Result();
+    }
+
+    void PrepareDie() {
+        BackMover.instance.Speed = 0f;
+        InputManager.instance.Active = false;
+    }
+
+    void Result() {
+        EndCanvas.SetActive(true);
+        ScoreManager.instance.UpdateHighScore();
+        highScoreText.text = ScoreManager.instance.GetHighScore().ToString();
+        currentScoreText.text = ScoreManager.instance.GetScore.ToString();
+    }
+
+    public void AddFucToEventForDie(CallForEvent eventFunc) {
+       DieEvent += eventFunc;
+    }
+
+    public void Reload() {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+    }
+
+    public void Title() {
+        SceneManager.LoadScene("Title");
     }
 }

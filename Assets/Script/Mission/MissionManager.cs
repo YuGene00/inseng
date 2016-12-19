@@ -41,6 +41,7 @@ public class MissionManager : MonoBehaviour {
             return missionItemNo;
         }
     }
+    bool funeralFlag = false;
 
     void Awake() {
         instacne = this;
@@ -58,6 +59,7 @@ public class MissionManager : MonoBehaviour {
     }
 
     void ResetCurrentMission() {
+        missionItemNo = 0;
         currentMission.Clear();
     }
 
@@ -86,10 +88,32 @@ public class MissionManager : MonoBehaviour {
     }
 
     void SelectSpecialMission() {
-        int dice = Random.Range(0, specialSelector[EventManager.instacne.GetCurrentEvent.detail].GetMissionNo);
+        if (StageManager.instance.CurrentStage == StageManager.StageType.SENIOR) {
+            SelectMissionForSenior();
+        }
+        SelectRandomSpecial(specialSelector[EventManager.instacne.GetCurrentEvent.detail].GetMissionNo);
+    }
+
+    void SelectMissionForSenior() {
+        if (!funeralFlag) {
+            SelectRandomSpecial(specialSelector[EventManager.instacne.GetCurrentEvent.detail].GetMissionNo - 1);
+            funeralFlag = true;
+        } else {
+            int funeralIndex = specialSelector[EventManager.instacne.GetCurrentEvent.detail].GetMissionNo - 1;
+            AddMission(funeralIndex, specialSelector[EventManager.instacne.GetCurrentEvent.detail].SelectMission(funeralIndex));
+            funeralFlag = false;
+        }
+    }
+
+    void SelectRandomSpecial(int missionNo) {
+        int dice = Random.Range(0, missionNo);
+        AddMission(dice, specialSelector[EventManager.instacne.GetCurrentEvent.detail].SelectMission(dice));
+    }
+
+    void AddMission(int index, Mission mission) {
         MissionInfo tempMissionInfo = new MissionInfo();
-        tempMissionInfo.index = dice;
-        tempMissionInfo.mission = specialSelector[EventManager.instacne.GetCurrentEvent.detail].SelectMission(dice);
+        tempMissionInfo.index = index;
+        tempMissionInfo.mission = mission;
         currentMission.Add(tempMissionInfo);
     }
 

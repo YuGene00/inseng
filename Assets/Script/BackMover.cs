@@ -3,11 +3,17 @@ using System.Collections;
 
 public class BackMover : MonoBehaviour 
 {
+    //singleton
+    public static BackMover instance = null;
+
     //variable
-	static float speed = 800.0f;
-    public static float Speed {
+	float speed = 800.0f;
+    public float Speed {
         get {
             return speed;
+        }
+        set {
+            speed = value;
         }
     }
 	public Transform backGroup = null;
@@ -19,6 +25,7 @@ public class BackMover : MonoBehaviour
 	private int backIndex = 0;
 
     void Awake() {
+        instance = this;
         InitSpriteGroup();
     }
 
@@ -31,7 +38,7 @@ public class BackMover : MonoBehaviour
 			if (i.Equals (0))
 				ChangeImage (i, i);
 			else
-				ChangeImage(i,Random.Range (1,spriteGroup[(int)StageManager.instacne.CurrentStage].Length-2));
+				ChangeImage(i,Random.Range (1,spriteGroup[(int)StageManager.instance.CurrentStage].Length-2));
 
 			length = backGroup.GetChild (i).GetComponent<Renderer> ().bounds.size.y;
 			backGroup.GetChild (i).position = new Vector3 (0.0f,i*length,0.0f);
@@ -48,7 +55,7 @@ public class BackMover : MonoBehaviour
     }
 
     void BindFuncToEvent() {
-        StageManager.instacne.AddFuncToEventForStart(ChangeStage);
+        StageManager.instance.AddFuncToEventForStart(ChangeStage);
     }
 
     void ChangeStage()
@@ -94,7 +101,7 @@ public class BackMover : MonoBehaviour
 			if (!imgIndex.Equals (0))
 			{
 				//Stage Change Check
-				imgIndex = RndNum(1,spriteGroup[(int)StageManager.instacne.CurrentStage].Length-1,imgIndex);
+				imgIndex = RndNum(1,spriteGroup[(int)StageManager.instance.CurrentStage].Length-1,imgIndex);
 
 				ChangeImage (backIndex,imgIndex);
 			}
@@ -111,7 +118,7 @@ public class BackMover : MonoBehaviour
 
 	void ChangeImage(int bIndex, int iIndex)
 	{
-        Sprite sprite = spriteGroup[(int)StageManager.instacne.CurrentStage][iIndex];
+        Sprite sprite = spriteGroup[(int)StageManager.instance.CurrentStage][iIndex];
 
         backGroup.GetChild (bIndex).GetComponent<SpriteRenderer> ().sprite = sprite;
 	}

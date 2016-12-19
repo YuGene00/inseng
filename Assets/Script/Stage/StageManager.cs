@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class StageManager : MonoBehaviour {
-
-    //singleton
-    public static StageManager instacne = null;
 
     //enum
     public enum StageType {
         CHILD, STUDENT, UNIVERSITY, UNEMPLOYED, WORKER, CHICKEN, SENIOR, END
     }
+
+    //singleton
+    public static StageManager instance = null;
+
+    //inspector
+    public Text RemainTimeText;
 
     //variable
     Stage[] stageList = new Stage[(int)StageType.END];
@@ -27,12 +31,21 @@ public class StageManager : MonoBehaviour {
     event CallForEvent EndStageEvent = delegate { };
 
     void Awake() {
-        instacne = this;
+        instance = this;
         SetStage();
     }
 
     void Start() {
+        BindFuncToEvent();
         StartCoroutine("RunStage");
+    }
+
+    void BindFuncToEvent() {
+        EventManager.instacne.AddFucToEventForDie(StopStage);
+    }
+
+    void StopStage() {
+        StopCoroutine("RunStage");
     }
 
     void SetStage() {
@@ -55,6 +68,7 @@ public class StageManager : MonoBehaviour {
             stageList[(int)currentStage].StartStage();
             yield return WaitWhileStageRunningTrue;
             EndStageEvent();
+            yield return null;
         }
     }
 

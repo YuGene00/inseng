@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
     //singleton
@@ -15,10 +13,6 @@ public class Player : MonoBehaviour {
     public SpriteRenderer playerSpriteRenderer;
     public SpriteRenderer tmpSpriteRenderer;
     public BoxCollider2D playerCollider;
-
-    public GameObject EndCanvas;
-    public Text highScoreText;
-    public Text currentScoreText;
 
     //variable
     Move move;
@@ -61,7 +55,7 @@ public class Player : MonoBehaviour {
     }
 
     void BindFuncToEvent() {
-        StageManager.instacne.AddFuncToEventForStart(ChangeSprite);
+        StageManager.instance.AddFuncToEventForStart(ChangeSprite);
     }
 
     void ChangeSprite() {
@@ -75,6 +69,10 @@ public class Player : MonoBehaviour {
 
         Vector2 size = playerSpriteRenderer.sprite.bounds.size;
         playerCollider.size = size;
+    }
+
+    public void SetSpriteWithState(SpriteSelector.SpriteType type) {
+        spriteManager.SetRendererWithType(playerSpriteRenderer, type);
     }
 
     public Vector2 GetPosition() {
@@ -91,28 +89,5 @@ public class Player : MonoBehaviour {
 
     public void Damaged(int value) {
         life.Damaged(value);
-    }
-
-    void Result() {
-        Time.timeScale = 0f;
-        //ballon.PlaySound();
-        EndCanvas.SetActive(true);
-        //int currentScore = ScoreManager.instance.sco
-        //if (DataSender.highScore < currentScore) {
-            //DataSender.highScore = currentScore;
-        //}
-        //highScoreText.text = DataSender.highScore.ToString();
-        //currentScoreText.text = currentScore.ToString();
-    }
-
-    public void Reload() {
-        Time.timeScale = 1f;
-        Scene scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.name);
-    }
-
-    public void Title() {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("Title");
     }
 }

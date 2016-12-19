@@ -14,6 +14,11 @@ public class ObjectPool {
     Stack<GameObject> poolStack;
     Root root;
     GameObject origin;
+    public GameObject Origin {
+        get {
+            return origin;
+        }
+    }
     int unitNo;
 
     static public ObjectPool CreatePoolOfObjWithNumber(GameObject obj, int unitNo = 20) {

@@ -14,19 +14,15 @@ public class Item : MonoBehaviour {
             ownObjectPool = value;
         }
     }
-
-    //variable
-    Move move;
-    Vector2 unitDistance = Vector2.zero;
-    string itemName = null;
-    public string ItemName {
+    public bool GetIsEffectorSetted {
         get {
-            return itemName;
-        }
-        set {
-            itemName = value;
+            return effectorManager.GetIsEffectorSetted;
         }
     }
+
+    //variable
+    Move move = new Move();
+    Vector2 unitDistance = Vector2.zero;
     EffectorManager effectorManager = new EffectorManager(5);
 
     void Awake() {
@@ -39,7 +35,6 @@ public class Item : MonoBehaviour {
     }
 
     void InitMove() {
-        move = new Move();
         move.SetMovableArea(new Vector2(-460f, -740f), new Vector2(460f, 840f));
     }
 
@@ -49,7 +44,7 @@ public class Item : MonoBehaviour {
 
     IEnumerator DropItem() {
         while(true) {
-            unitDistance.y = BackMover.Speed * Time.deltaTime;
+            unitDistance.y = BackMover.instance.Speed * Time.deltaTime;
             move.MoveTransToDest(trans, (Vector2)trans.position - unitDistance);
             DestroyIfOutOfArea();
             yield return null;
@@ -77,5 +72,13 @@ public class Item : MonoBehaviour {
 
     public void RemoveEffector(System.Type type, int value) {
         effectorManager.RemoveEffector(type, value);
+    }
+
+    public void CopyAllEffectorFromItem(Item other) {
+        effectorManager.CopyAllEffectorFromManagerWithParent(other.effectorManager, this);
+    }
+
+    public void ClearEffector() {
+        effectorManager.Clear();
     }
 }

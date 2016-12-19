@@ -14,7 +14,7 @@ public class ItemManager : MonoBehaviour {
     public float normalItemPeriod = 0.5f;
     public float specialItemPeriod = 0.8f;
     public float branchItemPeriod = 0.8f;
-    public float redStarChance = 0.7f;
+    public float redStarChance = 0.3f;
 
     //variable
     ItemSelector[] enemySelector = new ItemSelector[(int)EventManager.EventTypeForEnemy.END];
@@ -84,6 +84,7 @@ public class ItemManager : MonoBehaviour {
         EventManager.instacne.AddFuncToEventForStart(SetDelegateToNormal, EventManager.EventType.NORMAL);
         EventManager.instacne.AddFuncToEventForStart(SetDelegateToSpecial, EventManager.EventType.SPECIAL);
         EventManager.instacne.AddFuncToEventForStart(SetDelegateToBranch, EventManager.EventType.BRANCH);
+        EventManager.instacne.AddFucToEventForDie(StopManager);
     }
 
     void SetDelegateToEnemy() {
@@ -100,6 +101,10 @@ public class ItemManager : MonoBehaviour {
 
     void SetDelegateToBranch() {
         createItemDelegate = CreateBranchAndReturnWait;
+    }
+
+    void StopManager() {
+        StopAllCoroutines();
     }
 
     void InitDelegate() {
@@ -139,7 +144,7 @@ public class ItemManager : MonoBehaviour {
 
     WaitForSeconds CreateNormalAndReturnWait() {
         float dice = Random.Range(0f, 1f);
-        if (dice > 0.3f) {
+        if (dice > redStarChance) {
             CreateItemWithSelector((int)StarType.YELLOW, normalSelector[EventManager.instacne.GetCurrentEvent.detail]);
         } else {
             CreateItemWithSelector((int)StarType.RED, normalSelector[0]);
