@@ -18,7 +18,7 @@ public class ScoreManager : MonoBehaviour {
         }
         set {
             if (value > score) {
-                SoundManager.instance.PlayCoin();
+                SoundManager.instance.PlayEffectSound(SoundManager.EffectType.COIN);
             }
             score = value;
             scoreText.text = score.ToString();

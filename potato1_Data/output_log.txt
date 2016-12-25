@@ -2,32 +2,43 @@ Initialize engine version: 5.4.3f1 (01f4c123905a)
 GfxDevice: creating device client; threaded=1
 Direct3D:
     Version:  Direct3D 11.0 [level 11.0]
-    Renderer: NVIDIA GeForce GT 630 (ID=0xf00)
+    Renderer: NVIDIA GeForce GTX 765M (ID=0x11e2)
     Vendor:   NVIDIA
-    VRAM:     1999 MB
+    VRAM:     2019 MB
 Begin MonoManager ReloadAssembly
-Platform assembly: D:\Project\Unity Personal\inseng\potato1_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading D:\Project\Unity Personal\inseng\potato1_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: D:\Project\Unity Personal\inseng\potato1_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading D:\Project\Unity Personal\inseng\potato1_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: D:\Project\Unity Personal\inseng\potato1_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading D:\Project\Unity Personal\inseng\potato1_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: D:\Project\Unity Personal\inseng\potato1_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading D:\Project\Unity Personal\inseng\potato1_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.040 seconds
-Platform assembly: D:\Project\Unity Personal\inseng\potato1_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: D:\Project\Unity Personal\inseng\potato1_Data\Managed\System.dll (this message is harmless)
+Platform assembly: D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.962 seconds
+Platform assembly: D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\System.dll (this message is harmless)
 <RI> Initializing input.
 <RI> Input initialized.
-desktop: 1920x1200 59Hz; virtual: 1920x1200 at 0,0
+desktop: 1600x900 59Hz; virtual: 1600x900 at 0,0
 <RI> Initialized touch support.
-UnloadTime: 0.530322 ms
+UnloadTime: 120.348663 ms
 Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 3.570136 ms
+UnloadTime: 4.213251 ms
 
 Unloading 28 unused Assets to reduce memory usage. Loaded Objects now: 3712.
-Total: 1.125245 ms (FindLiveObjects: 0.167660 ms CreateObjectMapping: 0.088336 ms MarkObjects: 0.806150 ms  DeleteObjects: 0.062196 ms)
+Total: 2.759752 ms (FindLiveObjects: 0.231722 ms CreateObjectMapping: 0.168561 ms MarkObjects: 2.021555 ms  DeleteObjects: 0.337123 ms)
 
-Setting up 2 worker threads for Enlighten.
-  Thread -> id: 3450 -> priority: 1 
-  Thread -> id: 36b0 -> priority: 1 
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 3.825993 ms
+
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 3712.
+Total: 2.451841 ms (FindLiveObjects: 0.259355 ms CreateObjectMapping: 0.149613 ms MarkObjects: 2.031424 ms  DeleteObjects: 0.011053 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.784305 ms
+
+Unloading 32 unused Assets to reduce memory usage. Loaded Objects now: 590.
+Total: 0.617796 ms (FindLiveObjects: 0.042239 ms CreateObjectMapping: 0.038686 ms MarkObjects: 0.419627 ms  DeleteObjects: 0.116453 ms)
+
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 1b74 -> priority: 1 

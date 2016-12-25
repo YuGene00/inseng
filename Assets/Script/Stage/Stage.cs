@@ -34,7 +34,7 @@ public abstract class Stage : MonoBehaviour {
     }
 
     void StopStage() {
-        StopCoroutine("StageContent");
+        StopAllCoroutines();
     }
 
 	public void StartStage() {

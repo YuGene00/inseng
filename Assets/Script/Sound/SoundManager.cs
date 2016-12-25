@@ -3,7 +3,7 @@
 public class SoundManager : MonoBehaviour 
 {
     //enum
-    enum EffectType {
+    public enum EffectType {
         BOOM, COIN, END
     }
 
@@ -11,9 +11,8 @@ public class SoundManager : MonoBehaviour
     public static SoundManager instance = null;
 
 	AudioSource BGMSource;
-    AudioSource effectSource;
-	AudioClip[] BGMList;
-    AudioClip[] effectList = new AudioClip[(int)EffectType.END];
+    AudioClip[] BGMList;
+    AudioSource[] effectSource = new AudioSource[(int)EffectType.END];
 
     void Awake() {
         instance = this;
@@ -27,9 +26,17 @@ public class SoundManager : MonoBehaviour
     }
 
     void InitEffect() {
-        effectSource = gameObject.AddComponent<AudioSource>();
-        effectList[(int)EffectType.BOOM] = Resources.Load<AudioClip>("EffectSound/Explosion");
-        effectList[(int)EffectType.COIN] = Resources.Load<AudioClip>("EffectSound/Coin");
+        for (int i = 0; i < (int)EffectType.END; ++i) {
+            effectSource[i] = gameObject.AddComponent<AudioSource>();
+            switch((EffectType)i) {
+                case EffectType.BOOM:
+                    effectSource[i].clip = Resources.Load<AudioClip>("EffectSound/Explosion");
+                    break;
+                case EffectType.COIN:
+                    effectSource[i].clip = Resources.Load<AudioClip>("EffectSound/Coin");
+                    break;
+            }
+        }
     }
 
     void Start() {
@@ -62,13 +69,7 @@ public class SoundManager : MonoBehaviour
 		BGMSource.Play ();
 	}
 
-    public void PlayBoom() {
-        effectSource.clip = effectList[(int)EffectType.BOOM];
-        effectSource.Play();
-    }
-
-    public void PlayCoin() {
-        effectSource.clip = effectList[(int)EffectType.COIN];
-        effectSource.Play();
+    public void PlayEffectSound(EffectType effectType) {
+        effectSource[(int)effectType].Play();
     }
 }

@@ -48,7 +48,7 @@ public class Life : MonoBehaviour {
     }
 
     void PlayBoomSound() {
-        SoundManager.instance.PlayBoom();
+        SoundManager.instance.PlayEffectSound(SoundManager.EffectType.BOOM);
     }
 
     IEnumerator BoomingBalloon(int index) {
@@ -64,6 +64,7 @@ public class Life : MonoBehaviour {
         for(int i = balloonNo; i < balloonNo + addNo; ++i) {
             balloonList[i].SetActive(true);
         }
+        balloonNo += addNo;
     }
 
     void Awake() {

@@ -68,7 +68,7 @@ public class Player : MonoBehaviour {
         tmpSpriteRenderer.gameObject.SetActive(false);
 
         Vector2 size = playerSpriteRenderer.sprite.bounds.size;
-        playerCollider.size = size;
+        playerCollider.size = size * 0.8f;
     }
 
     public void SetSpriteWithState(SpriteSelector.SpriteType type) {
