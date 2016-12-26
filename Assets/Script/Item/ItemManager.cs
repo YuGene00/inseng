@@ -10,10 +10,10 @@ public class ItemManager : MonoBehaviour {
 
     //inspector
     public Transform createZoneTrans;
-    public float enemyItemPeriod = 0.65f;
+    public float enemyItemPeriod = 0.58f;
     public float normalItemPeriod = 0.5f;
-    public float specialItemPeriod = 0.8f;
-    public float branchItemPeriod = 0.8f;
+    public float specialItemPeriod = 0.5f;
+    public float branchItemPeriod = 0.5f;
     public float redStarChance = 0.3f;
 
     //variable
@@ -167,16 +167,9 @@ public class ItemManager : MonoBehaviour {
             return;
         }
 
-        Vector2 genPoint = SelectGenPoint();
+        Vector2 genPoint = CreateZone.instance.SelectGenPoint();
         GameObject item = itemSelector.SelectItem(itemNo);
         item.transform.position = genPoint;
-    }
-
-    Vector2 SelectGenPoint() {
-        Vector2 genPoint;
-        float halfZoneXScale = createZoneTrans.localScale.x / 2;
-        genPoint.x = Random.Range(-halfZoneXScale, halfZoneXScale);
-        genPoint.y = createZoneTrans.position.y;
-        return genPoint;
+        CreateZone.instance.AddObjToCreatedObjList(item);
     }
 }

@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
     public SpriteRenderer playerSpriteRenderer;
     public SpriteRenderer tmpSpriteRenderer;
     public BoxCollider2D playerCollider;
+    public float colliderRate = 0.8f;
 
     //variable
     Move move;
@@ -68,7 +69,7 @@ public class Player : MonoBehaviour {
         tmpSpriteRenderer.gameObject.SetActive(false);
 
         Vector2 size = playerSpriteRenderer.sprite.bounds.size;
-        playerCollider.size = size;
+        playerCollider.size = size * colliderRate;
     }
 
     public void SetSpriteWithState(SpriteSelector.SpriteType type) {

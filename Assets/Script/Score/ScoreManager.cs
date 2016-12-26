@@ -7,9 +7,6 @@ public class ScoreManager : MonoBehaviour {
     //singleton
     public static ScoreManager instance = null;
 
-    //inspector
-    public Text scoreText;
-
     //variable
     int score = 0;
     int Score {
@@ -18,10 +15,10 @@ public class ScoreManager : MonoBehaviour {
         }
         set {
             if (value > score) {
-                SoundManager.instance.PlayCoin();
+                SoundManager.instance.PlayEffectSound(SoundManager.EffectType.COIN);
             }
             score = value;
-            scoreText.text = score.ToString();
+            UIManager.instance.SetScore(score);
         }
     }
     public int GetScore {

@@ -3,6 +3,9 @@ using System.Collections;
 
 public abstract class Stage : MonoBehaviour {
 
+    //const
+    const float normalTime = 20f;
+
     //variable
     protected static bool stageRunning;
     public static bool StageRunning {
@@ -15,6 +18,7 @@ public abstract class Stage : MonoBehaviour {
     }
     protected static bool DidJobHunt;
     float remainTime;
+    protected WaitForSeconds waitForNormal;
 
     void Awake() {
         InitVariable();
@@ -23,6 +27,7 @@ public abstract class Stage : MonoBehaviour {
     void InitVariable() {
         stageRunning = false;
         DidJobHunt = false;
+        waitForNormal = new WaitForSeconds(normalTime);
     }
 
     void Start() {
@@ -34,7 +39,7 @@ public abstract class Stage : MonoBehaviour {
     }
 
     void StopStage() {
-        StopCoroutine("StageContent");
+        StopAllCoroutines();
     }
 
 	public void StartStage() {
@@ -55,11 +60,13 @@ public abstract class Stage : MonoBehaviour {
 
     IEnumerator CountDown(float unit) {
         WaitForSeconds waitUnit = new WaitForSeconds(unit);
+        UIManager.instance.SetRemainTimeActive(true);
         while (remainTime > 0f) {
-            StageManager.instance.RemainTimeText.text = remainTime.ToString("0.0");
+            UIManager.instance.SetRemainTime(remainTime);
             remainTime -= unit;
             yield return waitUnit;
         }
+        UIManager.instance.SetRemainTimeActive(false);
     }
 }
 
@@ -67,21 +74,21 @@ public class ChildStage : Stage {
 
     protected override IEnumerator StageContent() {
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForSpecialStart(EventManager.EventTypeForSpecial.CHILD);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
         EventManager.instacne.EventForSpecialEnd();
 
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForSpecialStart(EventManager.EventTypeForSpecial.CHILD);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
         EventManager.instacne.EventForSpecialEnd();
 
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
 
         StageManager.instance.CurrentStage = StageManager.StageType.STUDENT;
@@ -94,21 +101,21 @@ public class StudentStage : Stage {
 
     protected override IEnumerator StageContent() {
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForSpecialStart(EventManager.EventTypeForSpecial.STUDENT);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
         EventManager.instacne.EventForSpecialEnd();
 
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForSpecialStart(EventManager.EventTypeForSpecial.STUDENT);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
         EventManager.instacne.EventForSpecialEnd();
 
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForBranchStart(EventManager.EventTypeForBranch.CSAT);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
@@ -122,21 +129,21 @@ public class UniversityStage : Stage {
 
     protected override IEnumerator StageContent() {
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForSpecialStart(EventManager.EventTypeForSpecial.UNIVERSITY);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
         EventManager.instacne.EventForSpecialEnd();
 
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForSpecialStart(EventManager.EventTypeForSpecial.UNIVERSITY);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
         EventManager.instacne.EventForSpecialEnd();
 
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForBranchStart(EventManager.EventTypeForBranch.JOBHUNT);
         DidJobHunt = true;
@@ -151,21 +158,21 @@ public class UnemployedStage : Stage {
 
     protected override IEnumerator StageContent() {
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForSpecialStart(EventManager.EventTypeForSpecial.UNEMPLOYED);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
         EventManager.instacne.EventForSpecialEnd();
 
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForSpecialStart(EventManager.EventTypeForSpecial.UNEMPLOYED);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
         EventManager.instacne.EventForSpecialEnd();
 
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
 
         if(DidJobHunt) {
@@ -186,21 +193,21 @@ public class WorkerStage : Stage {
 
     protected override IEnumerator StageContent() {
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForSpecialStart(EventManager.EventTypeForSpecial.WORKER);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
         EventManager.instacne.EventForSpecialEnd();
 
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForSpecialStart(EventManager.EventTypeForSpecial.WORKER);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
         EventManager.instacne.EventForSpecialEnd();
 
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForBranchStart(EventManager.EventTypeForBranch.MARRIAGE);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
@@ -214,21 +221,21 @@ public class ChickenStage : Stage {
 
     protected override IEnumerator StageContent() {
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForSpecialStart(EventManager.EventTypeForSpecial.CHICKEN);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
         EventManager.instacne.EventForSpecialEnd();
 
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForSpecialStart(EventManager.EventTypeForSpecial.CHICKEN);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);
         EventManager.instacne.EventForSpecialEnd();
 
         EventManager.instacne.EventForNormalStart();
-        yield return WaitAndDisplayTimePerUnit(20f, 0.1f);
+        yield return waitForNormal;
         EventManager.instacne.EventForNormalEnd();
         EventManager.instacne.EventForBranchStart(EventManager.EventTypeForBranch.MARRIAGE);
         yield return WaitAndDisplayTimePerUnit(8f, 0.1f);

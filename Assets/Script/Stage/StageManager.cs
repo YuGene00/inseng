@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 public class StageManager : MonoBehaviour {
@@ -11,9 +10,6 @@ public class StageManager : MonoBehaviour {
 
     //singleton
     public static StageManager instance = null;
-
-    //inspector
-    public Text RemainTimeText;
 
     //variable
     Stage[] stageList = new Stage[(int)StageType.END];

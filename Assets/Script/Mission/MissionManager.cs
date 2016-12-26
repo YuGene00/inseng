@@ -82,8 +82,10 @@ public class MissionManager : MonoBehaviour {
 
     void BindFuncToEvent() {
         EventManager.instacne.AddFuncToEventForStart(SelectSpecialMission, EventManager.EventType.SPECIAL);
+        EventManager.instacne.AddFuncToEventForStart(DisplaySpecialMission, EventManager.EventType.SPECIAL);
         EventManager.instacne.AddFuncToEventForEnd(CheckMissionPerformanceAndReset, EventManager.EventType.SPECIAL);
         EventManager.instacne.AddFuncToEventForStart(SelectBranchMission, EventManager.EventType.BRANCH);
+        EventManager.instacne.AddFuncToEventForStart(DisplayBranchMission, EventManager.EventType.BRANCH);
         EventManager.instacne.AddFuncToEventForEnd(CheckMissionPerformanceAndReset, EventManager.EventType.BRANCH);
     }
 
@@ -124,6 +126,16 @@ public class MissionManager : MonoBehaviour {
             tempMissionInfo.mission = branchSelector[EventManager.instacne.GetCurrentEvent.detail].SelectMission(i);
             currentMission.Add(tempMissionInfo);
         }
+    }
+
+    void DisplaySpecialMission() {
+        UIManager.instance.SetMissionNameAndDetail(currentMission[0].mission.GetName, currentMission[0].mission.GetDetail);
+        UIManager.instance.SetMissionAlarmWithType(UIManager.AlarmType.SPECIAL);
+    }
+
+    void DisplayBranchMission() {
+        UIManager.instance.SetMissionNameAndDetail(currentMission[0].mission.GetName, currentMission[0].mission.GetDetail);
+        UIManager.instance.SetMissionAlarmWithType(UIManager.AlarmType.BRANCH);
     }
 
     void CheckMissionPerformanceAndReset() {

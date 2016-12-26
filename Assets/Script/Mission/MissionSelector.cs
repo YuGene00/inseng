@@ -166,7 +166,7 @@ public class SeniorMissionSelector : MissionSelector {
 public class CSATMissionSelector : MissionSelector {
 
     protected override int CreateMissionListAndReturnNo() {
-        const int sucCondition = 7;
+        const int sucCondition = 8;
         Mission[] tempList = {
             new Mission("수능", "대학 합격을 위해 달려요. 실패 시 백수!",
                 new ItemNumberChecker(sucCondition, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
@@ -187,7 +187,7 @@ public class CSATMissionSelector : MissionSelector {
 public class JobHuntMissionSelector : MissionSelector {
 
     protected override int CreateMissionListAndReturnNo() {
-        const int sucCondition = 7;
+        const int sucCondition = 8;
         Mission[] tempList = {
             new Mission("취업준비", "직장에 들어가기 위해 달려요. 실패 시 백수!",
                 new ItemNumberChecker(sucCondition, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
@@ -208,7 +208,7 @@ public class JobHuntMissionSelector : MissionSelector {
 public class DarwinismMissionSelector : MissionSelector {
 
     protected override int CreateMissionListAndReturnNo() {
-        const int sucCondition = 7;
+        const int sucCondition = 8;
         Mission[] tempList = {
             new Mission("사회생존", "직장에서 살아남으세요. 실패하면 취킨을 튀겨요.",
                 new ItemNumberChecker(sucCondition, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
@@ -229,7 +229,7 @@ public class DarwinismMissionSelector : MissionSelector {
 public class MarriageMissionSelector : MissionSelector {
 
     protected override int CreateMissionListAndReturnNo() {
-        const int sucCondition = 7;
+        const int sucCondition = 8;
         Mission[] tempList = {
             new Mission("결혼", "운명의 상대를 만나 귀여운 아이를 가지도록 해요.",
                 new ItemNumberChecker(sucCondition, ItemNumberChecker.MeaningOfNumber.DO_NOT_CHECK))
