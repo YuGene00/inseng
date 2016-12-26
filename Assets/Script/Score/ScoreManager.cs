@@ -16,6 +16,8 @@ public class ScoreManager : MonoBehaviour {
         set {
             if (value > score) {
                 SoundManager.instance.PlayEffectSound(SoundManager.EffectType.COIN);
+            } else {
+                SoundManager.instance.PlayEffectSound(SoundManager.EffectType.MINUS);
             }
             score = value;
             UIManager.instance.SetScore(score);

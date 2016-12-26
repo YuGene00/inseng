@@ -4,7 +4,7 @@ public class SoundManager : MonoBehaviour
 {
     //enum
     public enum EffectType {
-        BOOM, COIN, END
+        BOOM, COIN, MINUS, END
     }
 
     //singleton
@@ -34,6 +34,9 @@ public class SoundManager : MonoBehaviour
                     break;
                 case EffectType.COIN:
                     effectSource[i].clip = Resources.Load<AudioClip>("EffectSound/Coin");
+                    break;
+                case EffectType.MINUS:
+                    effectSource[i].clip = Resources.Load<AudioClip>("EffectSound/Minus");
                     break;
             }
         }

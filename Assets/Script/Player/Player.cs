@@ -84,6 +84,10 @@ public class Player : MonoBehaviour {
         return move.MoveTransToDestInArea(trans, dest);
     }
 
+    public bool IsInArea() {
+        return move.IsInArea(trans.position);
+    }
+
     public void AddLife(int value) {
         life.AddLife(value);
     }

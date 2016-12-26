@@ -149,13 +149,21 @@ public class EventManager : MonoBehaviour {
         DieEvent();
         PrepareDie();
         yield return new WaitForSeconds(1f);
-        Player.instance.SetSpriteWithState(SpriteSelector.SpriteType.DROP);
+        Rigidbody2D rigid = Player.instance.GetComponent<Rigidbody2D>();
+        SetToFallingWithRigid(rigid);
         Result();
+        yield return new WaitWhile(() => (Player.instance.IsInArea()));
+        rigid.isKinematic = true;
     }
 
     void PrepareDie() {
         BackMover.instance.Speed = 0f;
         InputManager.instance.Active = false;
+    }
+
+    void SetToFallingWithRigid(Rigidbody2D rigid) {
+        Player.instance.SetSpriteWithState(SpriteSelector.SpriteType.DROP);
+        rigid.isKinematic = false;
     }
 
     void Result() {
