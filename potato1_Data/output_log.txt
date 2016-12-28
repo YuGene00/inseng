@@ -2,32 +2,37 @@ Initialize engine version: 5.4.3f1 (01f4c123905a)
 GfxDevice: creating device client; threaded=1
 Direct3D:
     Version:  Direct3D 11.0 [level 11.0]
-    Renderer: NVIDIA GeForce GT 630 (ID=0xf00)
+    Renderer: NVIDIA GeForce GTX 765M (ID=0x11e2)
     Vendor:   NVIDIA
-    VRAM:     1999 MB
+    VRAM:     2019 MB
 Begin MonoManager ReloadAssembly
-Platform assembly: D:\Project\Unity Personal\inseng\potato1_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading D:\Project\Unity Personal\inseng\potato1_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: D:\Project\Unity Personal\inseng\potato1_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading D:\Project\Unity Personal\inseng\potato1_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: D:\Project\Unity Personal\inseng\potato1_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading D:\Project\Unity Personal\inseng\potato1_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: D:\Project\Unity Personal\inseng\potato1_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading D:\Project\Unity Personal\inseng\potato1_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.040 seconds
-Platform assembly: D:\Project\Unity Personal\inseng\potato1_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: D:\Project\Unity Personal\inseng\potato1_Data\Managed\System.dll (this message is harmless)
+Platform assembly: D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.072 seconds
+Platform assembly: D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\내 문서\Unity Projects\inseng\potato1_Data\Managed\System.dll (this message is harmless)
 <RI> Initializing input.
 <RI> Input initialized.
-desktop: 1920x1200 59Hz; virtual: 1920x1200 at 0,0
+desktop: 1600x900 59Hz; virtual: 1600x900 at 0,0
 <RI> Initialized touch support.
-UnloadTime: 0.658623 ms
+UnloadTime: 0.783595 ms
 Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 3.009175 ms
+UnloadTime: 8.113466 ms
 
 Unloading 28 unused Assets to reduce memory usage. Loaded Objects now: 3703.
-Total: 1.114131 ms (FindLiveObjects: 0.152937 ms CreateObjectMapping: 0.103060 ms MarkObjects: 0.810659 ms  DeleteObjects: 0.046872 ms)
+Total: 4.536956 ms (FindLiveObjects: 0.186720 ms CreateObjectMapping: 0.090399 ms MarkObjects: 4.182463 ms  DeleteObjects: 0.076977 ms)
 
-Setting up 2 worker threads for Enlighten.
-  Thread -> id: 3d60 -> priority: 1 
-  Thread -> id: 3574 -> priority: 1 
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 3.365708 ms
+
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 3703.
+Total: 2.705278 ms (FindLiveObjects: 0.296463 ms CreateObjectMapping: 0.112900 ms MarkObjects: 2.282097 ms  DeleteObjects: 0.013027 ms)
+
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 3f00 -> priority: 1 
