@@ -154,6 +154,7 @@ public class EventManager : MonoBehaviour {
         Result();
         yield return new WaitWhile(() => (Player.instance.IsInArea()));
         rigid.isKinematic = true;
+        rigid.velocity = Vector2.zero;
     }
 
     void PrepareDie() {
